@@ -1,12 +1,13 @@
 import { verifyWebhook } from "@clerk/nextjs/webhooks";
-import { NextRequest } from "next/server";
 import { db } from "@/db";
 import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
+import { NextRequest } from "next/server";
 
-export async function POST(req: NextRequest) {
+export async function POST(req: Request) {
     try {
-        const evt = await verifyWebhook(req);
+        // Wrap req with NextReq to satisfy verifyWebhook
+        const evt = await verifyWebhook(new NextRequest(req));
         const eventType = evt.type;
 
         if (eventType === "user.created") {
