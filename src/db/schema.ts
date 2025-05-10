@@ -9,7 +9,7 @@ export const users = pgTable(
         name: varchar("name", { length: 255 }).notNull(),
         imageUrl: text("image_url").notNull(),
         createdAt: timestamp("created_at").defaultNow().notNull(),
-        updatedAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at").defaultNow().notNull(),
     },
     // index clerkId to query faster
     (t) => [uniqueIndex("clerk_id_idx").on(t.clerkId)]
