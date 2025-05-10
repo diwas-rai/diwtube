@@ -4,6 +4,8 @@
   "private": true,
   "packageManager": "bun@1.2.0",
   "scripts": {
+    "dev:all": "concurrently \"bun run dev:webhook\" \"bun run dev\"",
+    "dev:webhook": "ngrok http --url=ruling-regular-wren.ngrok-free.app 3000",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -68,6 +70,7 @@
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
+    "concurrently": "9.1.2",
     "drizzle-kit": "0.30.3",
     "eslint": "^9",
     "eslint-config-next": "15.1.6",
