@@ -4,10 +4,9 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
-export async function POST(req: Request) {
+export async function POST(req: NextRequest) {
     try {
-        // Wrap req with NextReq to satisfy verifyWebhook
-        const evt = await verifyWebhook(new NextRequest(req));
+        const evt = await verifyWebhook(req);
         const eventType = evt.type;
 
         if (eventType === "user.created") {
