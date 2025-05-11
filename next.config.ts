@@ -1,7 +1,14 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+    async rewrites() {
+        return ([
+            {
+                source: "/api/users/webhook", // Ensure no redirects here
+                destination: "/src/app/api/users/webhook",
+            },
+        ]);
+    },
 };
 
 export default nextConfig;
