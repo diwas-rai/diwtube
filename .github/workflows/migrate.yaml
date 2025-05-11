@@ -1,0 +1,25 @@
+name: Run Drizzle Migrations
+
+on:
+    push:
+        branches:
+            - automate-migrations-in-prod
+
+jobs:
+    migrate:
+        runs-on: ubuntu-latest
+
+        steps:
+            - name: Checkout repository
+              uses: actions/checkout@v4
+              
+            - name: Setup Bun
+              uses: oven-sh/setup-bun@v2
+        
+            - name: Install dependencies
+              run: bun install
+            
+            - name: Run migrations on NeonDB
+              env: 
+                DATABASE_URL: ${{ secrets.PROD_DATABASE_URL }}
+              run: bun x drizzle-kit push
