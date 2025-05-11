@@ -4,10 +4,6 @@ import { users } from "@/db/schema";
 import { eq } from "drizzle-orm";
 import { NextRequest } from "next/server";
 
-export async function GET(req: NextRequest) {
-    return new Response("Webhook endpoint", { status: 200 });
-}
-
 export async function POST(req: NextRequest) {
     try {
         const evt = await verifyWebhook(req);
