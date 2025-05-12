@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import { HydrateClient, trpc } from "@/trpc/server";
 import { PageClient } from "./client";
 import { Suspense } from "react";
