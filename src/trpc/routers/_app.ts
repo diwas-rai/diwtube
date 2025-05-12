@@ -8,7 +8,9 @@ export const appRouter = createTRPCRouter({
             })
         )
         .query((opts) => {
-            console.log({ dbUser: opts.ctx.user });
+            if (process.env.NODE_ENV === "development") {
+                console.log({ dbUser: opts.ctx.user });
+            }
             return {
                 greeting: `hello ${opts.input.text}`,
             };
