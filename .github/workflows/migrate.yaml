@@ -1,4 +1,4 @@
-name: Run Drizzle Migrations
+name: Run Drizzle Migrations & Seed DB
 
 on:
     push:
@@ -23,3 +23,8 @@ jobs:
               env: 
                 DATABASE_URL: ${{ secrets.DATABASE_URL }}
               run: bun x drizzle-kit push
+
+            - name: Seed categories
+              env: 
+                DATABASE_URL: ${{ secrets.DATABASE_URL }}
+              run: bun run src/scripts/seed-categories.ts
