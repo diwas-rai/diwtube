@@ -1,9 +1,9 @@
-import { VideosSections } from "../sections/videos-sections"
+import { VideosSection } from "../sections/videos-sections"
 
 export const StudioView = () => {
     return (
         <div>
-            <VideosSections />
+            <VideosSection />
         </div>
     )
 }
