@@ -36,9 +36,15 @@ export const FilterCarousel = ({ value, isLoading, onSelect, data }: FilterCarou
         setCount(api.scrollSnapList().length);
         setCurrent(api.selectedScrollSnap() + 1);
 
-        api.on("select", () => {
+        const handleSelect = () => {
             setCurrent(api.selectedScrollSnap() + 1);
-        });
+        };
+
+        api.on("select", handleSelect);
+
+        return () => {
+            api.off("select", handleSelect);
+        };
     }, [api]);
 
     return (
