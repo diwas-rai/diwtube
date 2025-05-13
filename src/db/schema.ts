@@ -45,7 +45,7 @@ export const videos = pgTable("videos", {
             onDelete: "cascade",
         })
         .notNull(),
-    categoryId: uuid("category").references(() => categories.id, { onDelete: "set null" }),
+    categoryId: uuid("category_id").references(() => categories.id, { onDelete: "set null" }),
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
@@ -56,9 +56,9 @@ export const videoRelations = relations(videos, ({ one }) => ({
         fields: [videos.userId],
         references: [users.id],
     }),
-    // categories can only have one user
-    categories: one(categories, {
+    // videos can only have one category
+    category: one(categories, {
         fields: [videos.categoryId],
-        references: [categories.id]
-    })
+        references: [categories.id],
+    }),
 }));
