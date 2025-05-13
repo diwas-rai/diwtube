@@ -1,4 +1,4 @@
-name: Run Drizzle Migrations & Seed DB
+name: Run Drizzle Migrations
 
 on:
     push:
