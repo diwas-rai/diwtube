@@ -25,7 +25,6 @@ interface UserAvatarProps extends VariantProps<typeof avatarVariants> {
 }
 
 export const UserAvatar = ({ imageUrl, name, size, className, onClick }: UserAvatarProps) => {
-    console.log(cn(avatarVariants({ size }), className))
     return (
         <Avatar className={cn(avatarVariants({ size }), className)} onClick={onClick}>
             <AvatarImage src={imageUrl} alt={name} />
