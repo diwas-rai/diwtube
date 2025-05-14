@@ -10,6 +10,7 @@ import {
 } from "@mux/mux-node/resources/webhooks.mjs";
 import { eq } from "drizzle-orm";
 import { headers } from "next/headers";
+import { UTApi } from "uploadthing/server";
 
 type WebhookEvent =
     | VideoAssetCreatedWebhookEvent
@@ -81,9 +82,23 @@ export const POST = async (request: Request) => {
                 return new Response("Missing upload ID", { status: 400 });
             }
 
-            const thumbnailUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg`;
-            const previewUrl = `https://image.mux.com/${playbackId}/animated.gif`;
+            const tempThumbnailUrl = `https://image.mux.com/${playbackId}/thumbnail.jpg`;
+            const tempPreviewUrl = `https://image.mux.com/${playbackId}/animated.gif`;
             const duration = data.duration ? Math.round(data.duration * 1000) : 0; // data.duration is in milliseconds
+
+            // Upload default thumbnails and preview to UploadThing for consistency
+            const utapi = new UTApi();
+            const [uploadedThumbnail, uploadedPreview] = await utapi.uploadFilesFromUrl([
+                tempThumbnailUrl,
+                tempPreviewUrl,
+            ]);
+
+            if (!uploadedThumbnail.data || !uploadedPreview.data) {
+                return new Response("Failed to upload default thumbnail", { status: 500 });
+            }
+
+            const { key: thumbnailKey, ufsUrl: thumbnailUrl } = uploadedThumbnail.data;
+            const { key: previewKey, ufsUrl: previewUrl } = uploadedPreview.data;
 
             await db
                 .update(videos)
@@ -92,7 +107,9 @@ export const POST = async (request: Request) => {
                     muxPlaybackId: playbackId,
                     muxAssetId: data.id,
                     thumbnailUrl,
+                    thumbnailKey,
                     previewUrl,
+                    previewKey,
                     duration,
                 })
                 .where(eq(videos.muxUploadId, data.upload_id));
@@ -110,11 +127,11 @@ export const POST = async (request: Request) => {
             break;
         }
         case "video.asset.track.ready": {
+            // TS incorretly asserts that asset_id does not exist, so force here
             const data = payload.data as VideoAssetTrackReadyWebhookEvent["data"] & { asset_id: string };
 
-            console.log("Track ready")
+            console.log("Track ready");
 
-            // TS incorretly asserts that asset_id does not exist
             const assetId = data.asset_id;
             const trackId = data.id;
             const status = data.status;
@@ -123,10 +140,13 @@ export const POST = async (request: Request) => {
                 return new Response("Missing asset ID", { status: 400 });
             }
 
-            await db.update(videos).set({
-                muxTrackId: trackId,
-                muxTrackStatus: status,
-            }).where(eq(videos.muxAssetId, assetId));
+            await db
+                .update(videos)
+                .set({
+                    muxTrackId: trackId,
+                    muxTrackStatus: status,
+                })
+                .where(eq(videos.muxAssetId, assetId));
             break;
         }
     }
