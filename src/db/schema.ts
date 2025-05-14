@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, text, timestamp, uniqueIndex, varchar, integer, pgEnum } from "drizzle-orm/pg-core";
-import { createInsertSchema, createUpdateSchema, createSelectSchema } from "drizzle-zod";
+import { integer, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import { createInsertSchema, createSelectSchema, createUpdateSchema } from "drizzle-zod";
 // use text instead of varchar for fields where unsure of length
 export const users = pgTable(
     "users",
@@ -49,7 +49,9 @@ export const videos = pgTable("videos", {
     muxTrackId: text("mux_track_id").unique(),
     muxTrackStatus: text("mux_track_status"),
     thumbnailUrl: text("thumbnail_url"),
+    thumbnailKey: text("thumbnail_key"),
     previewUrl: text("preview_url"),
+    previewKey: text("preview_key"),
     duration: integer("duration").default(0).notNull(),
     visibility: videoVisibility("visibility").default("private").notNull(),
     userId: uuid("user_id")
