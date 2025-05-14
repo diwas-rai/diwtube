@@ -28,7 +28,7 @@ export const StudioUploader = ({ endpoint, onSuccess }: StudioUploaderProps) => 
                     <div className="flex size-32 items-center justify-center gap-2 rounded-full bg-muted">
                         <UploadIcon className="group/drop-[&[:active]]:animate-bounce size-10 text-muted-foreground" />
                     </div>
-                    <div className="gap=2 flex flex-col text-center">
+                    <div className="gap-2 flex flex-col text-center">
                         <p className="text-sm">Drag and drop video files to upload them</p>
                         <p className="text-xs text-muted-foreground">
                             {" "}
