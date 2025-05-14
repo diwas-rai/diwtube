@@ -1,6 +1,7 @@
 "use client";
 
 import { InfiniteScroll } from "@/components/infinite-scroll";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
 import { snakeCaseToTitle } from "@/lib/utils";
@@ -14,11 +15,64 @@ import { ErrorBoundary } from "react-error-boundary";
 
 export const VideosSection = () => {
     return (
-        <Suspense fallback={<></>}>
+        <Suspense fallback={<VideosSectionSkeleton />}>
             <ErrorBoundary fallback={<></>}>
                 <VideosSectionsSuspense />
             </ErrorBoundary>
         </Suspense>
+    );
+};
+
+const VideosSectionSkeleton = () => {
+    return (
+        <div className="border-y">
+            <Table>
+                <TableHeader>
+                    <TableRow>
+                        <TableHead className="w-[510px] pl-6">Video</TableHead>
+                        <TableHead>Visibility</TableHead>
+                        <TableHead>Status</TableHead>
+                        <TableHead>Date</TableHead>
+                        <TableHead className="text-right">Views</TableHead>
+                        <TableHead className="text-right">Comments</TableHead>
+                        <TableHead className="pr-6 text-right">Likes</TableHead>
+                    </TableRow>
+                </TableHeader>
+                <TableBody>
+                    {Array.from({ length: 5 }).map((_, index) => (
+                        <TableRow key={index}>
+                            <TableCell className="pl-6">
+                                <div className="flex items-center gap-4">
+                                    <Skeleton className="h-20 w-36" />
+                                    <div className="flex flex-col gap-2">
+                                        <Skeleton className="h-4 w-28" />
+                                        <Skeleton className="h-3 w-48" />
+                                    </div>
+                                </div>
+                            </TableCell>
+                            <TableCell>
+                                <Skeleton className="h-4 w-20" />
+                            </TableCell>
+                            <TableCell>
+                                <Skeleton className="h-4 w-14" />
+                            </TableCell>
+                            <TableCell>
+                                <Skeleton className="h-4 w-28" />
+                            </TableCell>
+                            <TableCell className="text-right">
+                                <Skeleton className="ml-auto h-4 w-20" />
+                            </TableCell>
+                            <TableCell className="text-right">
+                                <Skeleton className="ml-auto h-4 w-20" />
+                            </TableCell>
+                            <TableCell className="pr-6 text-right">
+                                <Skeleton className="ml-auto h-4 w-20" />
+                            </TableCell>
+                        </TableRow>
+                    ))}
+                </TableBody>
+            </Table>
+        </div>
     );
 };
 
@@ -48,7 +102,7 @@ export const VideosSectionsSuspense = () => {
                             page.items.map((video) => (
                                 <Link href={`/studio/videos/${video.id}`} key={video.id} legacyBehavior>
                                     <TableRow className="cursor-pointer">
-                                        <TableCell>
+                                        <TableCell className="pl-6">
                                             <div className="flex items-center gap-4">
                                                 <div className="relative aspect-video w-36 shrink-0">
                                                     <VideoThumbnail
@@ -79,18 +133,18 @@ export const VideosSectionsSuspense = () => {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="items-center flex">
+                                            <div className="flex items-center">
                                                 {snakeCaseToTitle(video.muxStatus ?? "error")}
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="items-center flex">
+                                            <div className="flex items-center">
                                                 {format(new Date(video.createdAt), "dd MMM yyyy")}
                                             </div>
                                         </TableCell>
-                                        <TableCell>Views</TableCell>
-                                        <TableCell>Comments</TableCell>
-                                        <TableCell>Likes</TableCell>
+                                        <TableCell className="text-right text-sm">Views</TableCell>
+                                        <TableCell className="text-right text-sm">Comments</TableCell>
+                                        <TableCell className="pr-6 text-right text-sm">Likes</TableCell>
                                     </TableRow>
                                 </Link>
                             ))
