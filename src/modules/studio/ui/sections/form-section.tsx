@@ -84,7 +84,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
         update.mutate(data);
     };
 
-    const fullUrl = `${process.env.VERCEL_URL ?? "http://localhost:3000"}/videos/${videoId}`;
+    const fullUrl = `${process.env.URL}/videos/${videoId}`;
 
     const [isCopied, setIsCopied] = useState(false);
     const onCopy = async () => {
