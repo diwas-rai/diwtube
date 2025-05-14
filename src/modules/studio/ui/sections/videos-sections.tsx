@@ -79,12 +79,12 @@ export const VideosSectionsSuspense = () => {
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="item-center flex">
+                                            <div className="items-center flex">
                                                 {snakeCaseToTitle(video.muxStatus ?? "error")}
                                             </div>
                                         </TableCell>
                                         <TableCell>
-                                            <div className="item-center flex">
+                                            <div className="items-center flex">
                                                 {format(new Date(video.createdAt), "dd MMM yyyy")}
                                             </div>
                                         </TableCell>
