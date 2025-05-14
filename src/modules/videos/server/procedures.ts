@@ -23,9 +23,8 @@ export const videosRouter = createTRPCRouter({
             }
 
             // Clean up UploadThing storage before restoring default thumbnail
+            const utapi = new UTApi();
             if (existingVideo.thumbnailKey) {
-                const utapi = new UTApi();
-
                 await utapi.deleteFiles(existingVideo.thumbnailKey);
                 await db
                     .update(videos)
@@ -39,7 +38,6 @@ export const videosRouter = createTRPCRouter({
 
             const tempThumbnailUrl = `https://image.mux.com/${existingVideo.muxPlaybackId}/thumbnail.jpg`;
 
-            const utapi = new UTApi();
             const uploadedThumbnail = await utapi.uploadFilesFromUrl(tempThumbnailUrl);
 
             if (!uploadedThumbnail.data) {
