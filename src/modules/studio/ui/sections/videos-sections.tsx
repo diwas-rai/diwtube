@@ -3,7 +3,11 @@
 import { InfiniteScroll } from "@/components/infinite-scroll";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { DEFAULT_LIMIT } from "@/constants";
+import { snakeCaseToTitle } from "@/lib/utils";
+import { VideoThumbnail } from "@/modules/videos/ui/components/video-thumbnails";
 import { trpc } from "@/trpc/client";
+import { format } from "date-fns";
+import { Globe2Icon, LockIcon } from "lucide-react";
 import Link from "next/link";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -44,10 +48,46 @@ export const VideosSectionsSuspense = () => {
                             page.items.map((video) => (
                                 <Link href={`/studio/videos/${video.id}`} key={video.id} legacyBehavior>
                                     <TableRow className="cursor-pointer">
-                                        <TableCell>{video.title}</TableCell>
-                                        <TableCell>Visibility</TableCell>
-                                        <TableCell>Status</TableCell>
-                                        <TableCell>Date</TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center gap-4">
+                                                <div className="flex flex-col gap-y-1 overflow-hidden">
+                                                    <span className="line-clamp-1 text-sm">
+                                                        {video.title}
+                                                    </span>
+                                                    <span className="line-clamp-1 text-xs text-muted-foreground">
+                                                        {video.description ?? "No description"}
+                                                    </span>
+                                                </div>
+                                                <div className="relative aspect-video w-36 shrink-0">
+                                                    <VideoThumbnail
+                                                        imageUrl={video.thumbnailUrl}
+                                                        previewUrl={video.previewUrl}
+                                                        title={video.title}
+                                                        duration={video.duration ?? 0}
+                                                    />
+                                                </div>
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="flex items-center">
+                                                {video.visibility === "private" ? (
+                                                    <LockIcon className="mr-2 size-4" />
+                                                ) : (
+                                                    <Globe2Icon className="mr-2 size-4" />
+                                                )}
+                                                {snakeCaseToTitle(video.visibility)}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="items-center flex">
+                                                {snakeCaseToTitle(video.muxStatus ?? "error")}
+                                            </div>
+                                        </TableCell>
+                                        <TableCell>
+                                            <div className="items-center flex">
+                                                {format(new Date(video.createdAt), "dd MMM yyyy")}
+                                            </div>
+                                        </TableCell>
                                         <TableCell>Views</TableCell>
                                         <TableCell>Comments</TableCell>
                                         <TableCell>Likes</TableCell>
