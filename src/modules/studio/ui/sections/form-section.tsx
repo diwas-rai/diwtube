@@ -14,10 +14,12 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
 import { videoUpdateSchema } from "@/db/schema";
 import { snakeCaseToTitle } from "@/lib/utils";
+import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
 import { VideoPlayer } from "@/modules/videos/ui/components/video-player";
 import { trpc } from "@/trpc/client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { CopyCheckIcon, CopyIcon, Globe2Icon, LockIcon, MoreVerticalIcon, TrashIcon } from "lucide-react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { Suspense, useState } from "react";
@@ -161,6 +163,25 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                         />
                                     </FormControl>
                                     <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+
+                        <FormField
+                            name="thumbnailUrl"
+                            control={form.control}
+                            render={() => (
+                                <FormItem>
+                                    <FormLabel>Thumbnail</FormLabel>
+                                    <FormControl>
+                                        <div className="group relative h-[84px] w-[153px] border border-dashed border-neutral-400 p-0.5">
+                                            <Image
+                                                fill
+                                                alt="thumbnail"
+                                                src={video.thumbnailUrl ?? THUMBNAIL_FALLBACK}
+                                            />
+                                        </div>
+                                    </FormControl>
                                 </FormItem>
                             )}
                         />
