@@ -50,14 +50,6 @@ export const VideosSectionsSuspense = () => {
                                     <TableRow className="cursor-pointer">
                                         <TableCell>
                                             <div className="flex items-center gap-4">
-                                                <div className="flex flex-col gap-y-1 overflow-hidden">
-                                                    <span className="line-clamp-1 text-sm">
-                                                        {video.title}
-                                                    </span>
-                                                    <span className="line-clamp-1 text-xs text-muted-foreground">
-                                                        {video.description ?? "No description"}
-                                                    </span>
-                                                </div>
                                                 <div className="relative aspect-video w-36 shrink-0">
                                                     <VideoThumbnail
                                                         imageUrl={video.thumbnailUrl}
@@ -65,6 +57,14 @@ export const VideosSectionsSuspense = () => {
                                                         title={video.title}
                                                         duration={video.duration ?? 0}
                                                     />
+                                                </div>
+                                                <div className="flex flex-col gap-y-1 overflow-hidden">
+                                                    <span className="line-clamp-1 text-sm">
+                                                        {video.title}
+                                                    </span>
+                                                    <span className="line-clamp-1 text-xs text-muted-foreground">
+                                                        {video.description ?? "No description"}
+                                                    </span>
                                                 </div>
                                             </div>
                                         </TableCell>
