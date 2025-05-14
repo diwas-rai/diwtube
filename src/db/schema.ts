@@ -1,6 +1,6 @@
 import { relations } from "drizzle-orm";
 import { pgTable, uuid, text, timestamp, uniqueIndex, varchar, integer, pgEnum } from "drizzle-orm/pg-core";
-
+import { createInsertSchema, createUpdateSchema, createSelectSchema } from "drizzle-zod";
 // use text instead of varchar for fields where unsure of length
 export const users = pgTable(
     "users",
@@ -61,6 +61,10 @@ export const videos = pgTable("videos", {
     createdAt: timestamp("created_at").defaultNow().notNull(),
     updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
+
+export const videoInsertSchema = createInsertSchema(videos);
+export const videoUpdateSchema = createUpdateSchema(videos);
+export const videoSelectSchema = createSelectSchema(videos);
 
 export const videoRelations = relations(videos, ({ one }) => ({
     // videos can only have one user (uploader)
