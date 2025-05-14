@@ -48,12 +48,17 @@ export const VideosSectionsSuspense = () => {
                                         <TableCell>
                                             <div className="flex items-center gap-4">
                                                 <div className="relative aspect-video w-36 shrink-0">
-                                                    <VideoThumbnail />
+                                                    <VideoThumbnail
+                                                        imageUrl={video.thumbnailUrl}
+                                                        previewUrl={video.previewUrl}
+                                                        title={video.title}
+                                                        duration={video.duration ?? 0}
+                                                    />
                                                 </div>
                                             </div>
                                         </TableCell>
                                         <TableCell>Visibility</TableCell>
-                                        <TableCell>Status</TableCell>
+                                        <TableCell>{video.muxStatus}</TableCell>
                                         <TableCell>Date</TableCell>
                                         <TableCell>Views</TableCell>
                                         <TableCell>Comments</TableCell>

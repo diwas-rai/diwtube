@@ -1,5 +1,5 @@
 import { relations } from "drizzle-orm";
-import { pgTable, uuid, text, timestamp, uniqueIndex, varchar } from "drizzle-orm/pg-core";
+import { pgTable, uuid, text, timestamp, uniqueIndex, varchar, integer } from "drizzle-orm/pg-core";
 
 // use text instead of varchar for fields where unsure of length
 export const users = pgTable(
@@ -46,6 +46,9 @@ export const videos = pgTable("videos", {
     muxPlaybackId: text("mux_playback_id").unique(),
     muxTrackId: text("mux_track_id").unique(),
     muxTrackStatus: text("mux_track_status"),
+    thumbnailUrl: text("thumbnail_url"),
+    previewUrl: text("preview_url"),
+    duration: integer("duration"),
     userId: uuid("user_id")
         .references(() => users.id, {
             onDelete: "cascade",
