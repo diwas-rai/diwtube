@@ -99,7 +99,7 @@ export const POST = async (request: Request) => {
             break;
         }
         case "video.asset.deleted": {
-            const data = payload.data as VideoAssetErroredWebhookEvent["data"];
+            const data = payload.data as VideoAssetDeletedWebhookEvent["data"];
 
             if (!data.upload_id) {
                 return new Response("Missing upload ID", { status: 400 });
