@@ -20,6 +20,7 @@ export const VideoThumbnail = ({ title, imageUrl, previewUrl, duration }: VideoT
                     className="size-full object-cover group-hover:opacity-0"
                 />
                 <Image
+                    unoptimized={!!previewUrl} // gif cannot be optimised, but fallback img can be
                     src={previewUrl ?? "/placeholder.svg"}
                     alt={title}
                     fill
