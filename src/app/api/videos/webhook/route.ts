@@ -21,7 +21,7 @@ type WebhookEvent =
 const SIGNING_SECRET = process.env.MUX_WEBHOOK_SECRET;
 export const POST = async (request: Request) => {
     if (!SIGNING_SECRET) {
-        throw new Error("MUX_WEBHOOOK_SECRET not set");
+        throw new Error("MUX_WEBHOOK_SECRET not set");
     }
 
     const headersPayload = await headers();
