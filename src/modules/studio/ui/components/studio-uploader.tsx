@@ -13,15 +13,17 @@ interface StudioUploaderProps {
 }
 
 export const StudioUploader = ({ endpoint, onSuccess }: StudioUploaderProps) => {
+    const MUX_UPLOADER_ID = "video-uploader";
+
     return (
         <div>
             <MuxUploader
                 onSuccess={onSuccess}
                 endpoint={endpoint}
-                id="video-uploader"
+                id={MUX_UPLOADER_ID}
                 className="group/uploader hidden"
             />
-            <MuxUploaderDrop muxUploader="video-uploader" className="group/drop">
+            <MuxUploaderDrop muxUploader={MUX_UPLOADER_ID} className="group/drop">
                 <div slot="heading" className="flex flex-col items-center gap-6">
                     <div className="flex size-32 items-center justify-center gap-2 rounded-full bg-muted">
                         <UploadIcon className="group/drop-[&[:active]]:animate-bounce size-10 text-muted-foreground" />
@@ -33,16 +35,16 @@ export const StudioUploader = ({ endpoint, onSuccess }: StudioUploaderProps) => 
                             Your videos will be private until you publish them
                         </p>
                     </div>
-                    <MuxUploaderFileSelect muxUploader="video-uploader">
+                    <MuxUploaderFileSelect muxUploader={MUX_UPLOADER_ID}>
                         <Button type="button" className="rounded-full">
                             Select files
                         </Button>
                     </MuxUploaderFileSelect>
                 </div>
                 <span slot="separator" className="hidden" />
-                <MuxUploaderStatus muxUploader="video-uploader" className="text-sm" />
-                <MuxUploaderProgress muxUploader="video-uploader" className="text-sm" type="percentage" />
-                <MuxUploaderProgress muxUploader="video-uploader" className="text-sm" type="bar" />
+                <MuxUploaderStatus muxUploader={MUX_UPLOADER_ID} className="text-sm" />
+                <MuxUploaderProgress muxUploader={MUX_UPLOADER_ID} className="text-sm" type="percentage" />
+                <MuxUploaderProgress muxUploader={MUX_UPLOADER_ID} className="text-sm" type="bar" />
             </MuxUploaderDrop>
         </div>
     );
