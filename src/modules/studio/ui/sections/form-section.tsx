@@ -90,6 +90,17 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
         },
     });
 
+    const generateDescription = trpc.videos.generateDescription.useMutation({
+        onSuccess: () => {
+            toast.success("Background job started", {
+                description: <span className="text-gray-500">This may take some time</span>,
+            });
+        },
+        onError: () => {
+            toast.error("Something went wrong");
+        },
+    });
+
     const generateTitle = trpc.videos.generateTitle.useMutation({
         onSuccess: () => {
             toast.success("Background job started", {
@@ -178,35 +189,31 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 name="title"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>
-                                            <div className="flex items-center gap-x-2">Title</div>
-                                        </FormLabel>
+                                        <div className="flex items-center">
+                                            <FormLabel>
+                                                <div className="flex items-center gap-x-2">Title</div>
+                                            </FormLabel>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button
+                                                            size="icon"
+                                                            type="button"
+                                                            variant="outline"
+                                                            className="right-1 border-none shadow-none"
+                                                            onClick={() =>
+                                                                generateTitle.mutate({ id: videoId })
+                                                            }
+                                                        >
+                                                            <SparklesIcon />
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>AI-generated</TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
                                         <FormControl>
-                                            <div className="flex items-center">
-                                                <Input
-                                                    {...field}
-                                                    placeholder="Add a title to your video"
-                                                    className="pr-10"
-                                                />
-                                                <TooltipProvider>
-                                                    <Tooltip>
-                                                        <TooltipTrigger asChild>
-                                                            <Button
-                                                                size="icon"
-                                                                type="button"
-                                                                variant="outline"
-                                                                className="right-1 ml-0.5 border-none shadow-none"
-                                                                onClick={() =>
-                                                                    generateTitle.mutate({ id: videoId })
-                                                                }
-                                                            >
-                                                                <SparklesIcon />
-                                                            </Button>
-                                                        </TooltipTrigger>
-                                                        <TooltipContent>AI-generated</TooltipContent>
-                                                    </Tooltip>
-                                                </TooltipProvider>
-                                            </div>
+                                            <Input {...field} placeholder="Add a title to your video" />
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -219,7 +226,27 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Description</FormLabel>
+                                        <div className="flex items-center">
+                                            <FormLabel>Description</FormLabel>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button
+                                                            size="icon"
+                                                            type="button"
+                                                            variant="outline"
+                                                            className="right-1 border-none shadow-none"
+                                                            onClick={() =>
+                                                                generateDescription.mutate({ id: videoId })
+                                                            }
+                                                        >
+                                                            <SparklesIcon />
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>AI-generated</TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
                                         <FormControl>
                                             <Textarea
                                                 {...field}
@@ -234,6 +261,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 )}
                             />
 
+                            {/* Thumbnail */}
                             <FormField
                                 name="thumbnailUrl"
                                 control={form.control}
@@ -373,6 +401,8 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Visiblity */}
                             <FormField
                                 control={form.control}
                                 name="visibility"
