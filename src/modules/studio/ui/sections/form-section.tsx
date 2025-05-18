@@ -24,6 +24,7 @@ import {
     CopyIcon,
     Globe2Icon,
     ImagePlusIcon,
+    Loader2Icon,
     LockIcon,
     MoreVerticalIcon,
     RotateCcwIcon,
@@ -204,8 +205,15 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                                             onClick={() =>
                                                                 generateTitle.mutate({ id: videoId })
                                                             }
+                                                            disabled={
+                                                                generateTitle.isPending || !video.muxTrackId
+                                                            }
                                                         >
-                                                            <SparklesIcon />
+                                                            {generateTitle.isPending ? (
+                                                                <Loader2Icon className="animate-spin" />
+                                                            ) : (
+                                                                <SparklesIcon />
+                                                            )}
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>AI-generated</TooltipContent>
@@ -239,8 +247,16 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                                             onClick={() =>
                                                                 generateDescription.mutate({ id: videoId })
                                                             }
+                                                            disabled={
+                                                                generateDescription.isPending ||
+                                                                !video.muxTrackId
+                                                            }
                                                         >
-                                                            <SparklesIcon />
+                                                            {generateDescription.isPending ? (
+                                                                <Loader2Icon className="animate-spin" />
+                                                            ) : (
+                                                                <SparklesIcon />
+                                                            )}
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent>AI-generated</TooltipContent>
