@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { videoUpdateSchema } from "@/db/schema";
 import { snakeCaseToTitle } from "@/lib/utils";
 import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
@@ -177,9 +178,35 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 name="title"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Title</FormLabel>
+                                        <FormLabel>
+                                            <div className="flex items-center gap-x-2">Title</div>
+                                        </FormLabel>
                                         <FormControl>
-                                            <Input {...field} placeholder="Add a title to your video" />
+                                            <div className="flex items-center">
+                                                <Input
+                                                    {...field}
+                                                    placeholder="Add a title to your video"
+                                                    className="pr-10"
+                                                />
+                                                <TooltipProvider>
+                                                    <Tooltip>
+                                                        <TooltipTrigger asChild>
+                                                            <Button
+                                                                size="icon"
+                                                                type="button"
+                                                                variant="outline"
+                                                                className="right-1 ml-0.5 border-none shadow-none"
+                                                                onClick={() =>
+                                                                    generateTitle.mutate({ id: videoId })
+                                                                }
+                                                            >
+                                                                <SparklesIcon />
+                                                            </Button>
+                                                        </TooltipTrigger>
+                                                        <TooltipContent>AI-generated</TooltipContent>
+                                                    </Tooltip>
+                                                </TooltipProvider>
+                                            </div>
                                         </FormControl>
                                         <FormMessage />
                                     </FormItem>
@@ -238,7 +265,9 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                                             Change
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
-                                                            onClick={() => generateTitle.mutate({id: videoId})}
+                                                            onClick={() =>
+                                                                generateTitle.mutate({ id: videoId })
+                                                            }
                                                         >
                                                             <SparklesIcon className="mr-1 size-4" />
                                                             AI-generated
