@@ -58,11 +58,80 @@ export const FormSection = ({ videoId }: FormSectionProps) => {
 
 const FormSectionSkeleton = () => {
     return (
-        <div>
-            <Skeleton className="h-5 w-full" />
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <Skeleton className="h-6 w-40" />
+                    <Skeleton className="mt-2 h-4 w-60" />
+                </div>
+                <div className="flex items-center gap-x-2">
+                    <Skeleton className="h-10 w-20" />
+                    <Skeleton className="h-10 w-10" />
+                </div>
+            </div>
+
+            {/* Form Fields */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+                <div className="space-y-8 lg:col-span-3">
+                    {/* Title Field */}
+                    <div>
+                        <Skeleton className="h-5 w-20" />
+                        <Skeleton className="mt-2 h-10 w-full" />
+                    </div>
+
+                    {/* Description Field */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-24 w-full" />
+                    </div>
+
+                    {/* Thumbnail Field */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-[84px] w-[153px]" />
+                    </div>
+
+                    {/* Category Field */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-10 w-full" />
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-y-8 lg:col-span-2">
+                    {/* Video Preview */}
+                    <Skeleton className="aspect-video w-full" />
+
+                    {/* Video Link */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-6 w-full" />
+                    </div>
+
+                    {/* Video Status */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-6 w-40" />
+                    </div>
+
+                    {/* Subtitles Status */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-6 w-40" />
+                    </div>
+
+                    {/* Visibility */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-10 w-full" />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
+
 export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
     const router = useRouter();
     const utils = trpc.useUtils();
