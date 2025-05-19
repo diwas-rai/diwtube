@@ -12,6 +12,7 @@ import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Textarea } from "@/components/ui/textarea";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { videoUpdateSchema } from "@/db/schema";
 import { snakeCaseToTitle } from "@/lib/utils";
 import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
@@ -23,6 +24,7 @@ import {
     CopyIcon,
     Globe2Icon,
     ImagePlusIcon,
+    Loader2Icon,
     LockIcon,
     MoreVerticalIcon,
     RotateCcwIcon,
@@ -37,6 +39,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ThumbnailGenerateModal } from "../components/thumbnail-generate-modal copy";
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 
 interface FormSectionProps {
@@ -55,17 +58,87 @@ export const FormSection = ({ videoId }: FormSectionProps) => {
 
 const FormSectionSkeleton = () => {
     return (
-        <div>
-            <Skeleton className="h-5 w-full" />
+        <div className="space-y-6">
+            {/* Header */}
+            <div className="flex items-center justify-between">
+                <div>
+                    <Skeleton className="h-6 w-40" />
+                    <Skeleton className="mt-2 h-4 w-60" />
+                </div>
+                <div className="flex items-center gap-x-2">
+                    <Skeleton className="h-10 w-20" />
+                    <Skeleton className="h-10 w-10" />
+                </div>
+            </div>
+
+            {/* Form Fields */}
+            <div className="grid grid-cols-1 gap-6 lg:grid-cols-5">
+                <div className="space-y-8 lg:col-span-3">
+                    {/* Title Field */}
+                    <div>
+                        <Skeleton className="h-5 w-20" />
+                        <Skeleton className="mt-2 h-10 w-full" />
+                    </div>
+
+                    {/* Description Field */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-24 w-full" />
+                    </div>
+
+                    {/* Thumbnail Field */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-[84px] w-[153px]" />
+                    </div>
+
+                    {/* Category Field */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-10 w-full" />
+                    </div>
+                </div>
+
+                <div className="flex flex-col gap-y-8 lg:col-span-2">
+                    {/* Video Preview */}
+                    <Skeleton className="aspect-video w-full" />
+
+                    {/* Video Link */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-6 w-full" />
+                    </div>
+
+                    {/* Video Status */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-6 w-40" />
+                    </div>
+
+                    {/* Subtitles Status */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-6 w-40" />
+                    </div>
+
+                    {/* Visibility */}
+                    <div>
+                        <Skeleton className="h-5 w-28" />
+                        <Skeleton className="mt-2 h-10 w-full" />
+                    </div>
+                </div>
+            </div>
         </div>
     );
 };
+
 export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
     const router = useRouter();
     const utils = trpc.useUtils();
     const [video] = trpc.studio.getOne.useSuspenseQuery({ id: videoId });
     const [categories] = trpc.categories.getMany.useSuspenseQuery();
     const [thumbnailModalOpen, setThumbnailModalOpen] = useState(false);
+    const [thumbnailGenerateModalOpen, setThumbnailGenerateModalOpen] = useState(false);
 
     const update = trpc.videos.update.useMutation({
         onSuccess: () => {
@@ -83,6 +156,28 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
             utils.studio.getMany.invalidate();
             router.push("/studio");
             toast.success("Video removed");
+        },
+        onError: () => {
+            toast.error("Something went wrong");
+        },
+    });
+
+    const generateDescription = trpc.videos.generateDescription.useMutation({
+        onSuccess: () => {
+            toast.success("Background job started", {
+                description: <span className="text-gray-500">This may take some time</span>,
+            });
+        },
+        onError: () => {
+            toast.error("Something went wrong");
+        },
+    });
+
+    const generateTitle = trpc.videos.generateTitle.useMutation({
+        onSuccess: () => {
+            toast.success("Background job started", {
+                description: <span className="text-gray-500">This may take some time</span>,
+            });
         },
         onError: () => {
             toast.error("Something went wrong");
@@ -124,6 +219,11 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
 
     return (
         <>
+            <ThumbnailGenerateModal
+                open={thumbnailGenerateModalOpen}
+                onOpenChange={setThumbnailGenerateModalOpen}
+                videoId={videoId}
+            />
             <ThumbnailUploadModal
                 open={thumbnailModalOpen}
                 onOpenChange={setThumbnailModalOpen}
@@ -166,7 +266,36 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 name="title"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Title</FormLabel>
+                                        <div className="flex items-center">
+                                            <FormLabel>
+                                                <div className="flex items-center gap-x-2">Title</div>
+                                            </FormLabel>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button
+                                                            size="icon"
+                                                            type="button"
+                                                            variant="outline"
+                                                            className="right-1 border-none shadow-none"
+                                                            onClick={() =>
+                                                                generateTitle.mutate({ id: videoId })
+                                                            }
+                                                            disabled={
+                                                                generateTitle.isPending || !video.muxTrackId
+                                                            }
+                                                        >
+                                                            {generateTitle.isPending ? (
+                                                                <Loader2Icon className="animate-spin" />
+                                                            ) : (
+                                                                <SparklesIcon />
+                                                            )}
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>AI-generated</TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
                                         <FormControl>
                                             <Input {...field} placeholder="Add a title to your video" />
                                         </FormControl>
@@ -181,7 +310,35 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 name="description"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Description</FormLabel>
+                                        <div className="flex items-center">
+                                            <FormLabel>Description</FormLabel>
+                                            <TooltipProvider>
+                                                <Tooltip>
+                                                    <TooltipTrigger asChild>
+                                                        <Button
+                                                            size="icon"
+                                                            type="button"
+                                                            variant="outline"
+                                                            className="right-1 border-none shadow-none"
+                                                            onClick={() =>
+                                                                generateDescription.mutate({ id: videoId })
+                                                            }
+                                                            disabled={
+                                                                generateDescription.isPending ||
+                                                                !video.muxTrackId
+                                                            }
+                                                        >
+                                                            {generateDescription.isPending ? (
+                                                                <Loader2Icon className="animate-spin" />
+                                                            ) : (
+                                                                <SparklesIcon />
+                                                            )}
+                                                        </Button>
+                                                    </TooltipTrigger>
+                                                    <TooltipContent>AI-generated</TooltipContent>
+                                                </Tooltip>
+                                            </TooltipProvider>
+                                        </div>
                                         <FormControl>
                                             <Textarea
                                                 {...field}
@@ -196,6 +353,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                 )}
                             />
 
+                            {/* Thumbnail */}
                             <FormField
                                 name="thumbnailUrl"
                                 control={form.control}
@@ -226,7 +384,11 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                                             <ImagePlusIcon className="mr-1 size-4" />
                                                             Change
                                                         </DropdownMenuItem>
-                                                        <DropdownMenuItem>
+                                                        <DropdownMenuItem
+                                                            onClick={() =>
+                                                                setThumbnailGenerateModalOpen(true)
+                                                            }
+                                                        >
                                                             <SparklesIcon className="mr-1 size-4" />
                                                             AI-generated
                                                         </DropdownMenuItem>
@@ -331,6 +493,8 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                     </div>
                                 </div>
                             </div>
+
+                            {/* Visiblity */}
                             <FormField
                                 control={form.control}
                                 name="visibility"
