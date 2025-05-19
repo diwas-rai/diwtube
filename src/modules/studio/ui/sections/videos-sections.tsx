@@ -16,7 +16,7 @@ import { ErrorBoundary } from "react-error-boundary";
 export const VideosSection = () => {
     return (
         <Suspense fallback={<VideosSectionSkeleton />}>
-            <ErrorBoundary fallback={<></>}>
+            <ErrorBoundary fallback={<p>Error...</p>}>
                 <VideosSectionsSuspense />
             </ErrorBoundary>
         </Suspense>

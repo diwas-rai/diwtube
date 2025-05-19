@@ -13,7 +13,7 @@ interface CategoriesSectionProps {
 export const CategoriesSection = ({ categoryId }: CategoriesSectionProps) => {
     return (
         <Suspense fallback={<CategoriesSkeleton />}>
-            <ErrorBoundary fallback={<div>Loading...</div>}>
+            <ErrorBoundary fallback={<p>Error...</p>}>
                 <CategoriesSectionSuspense categoryId={categoryId} />
             </ErrorBoundary>
         </Suspense>

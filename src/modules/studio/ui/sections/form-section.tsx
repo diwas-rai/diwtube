@@ -49,7 +49,7 @@ interface FormSectionProps {
 export const FormSection = ({ videoId }: FormSectionProps) => {
     return (
         <Suspense fallback={<FormSectionSkeleton />}>
-            <ErrorBoundary fallback="Error...">
+            <ErrorBoundary fallback={<p>Error...</p>}>
                 <FormSectionSuspense videoId={videoId} />
             </ErrorBoundary>
         </Suspense>
