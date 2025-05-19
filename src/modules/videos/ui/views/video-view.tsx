@@ -1,5 +1,5 @@
-import { CommentsSection } from "../sections/comments-sections";
-import { SuggestionsSection } from "../sections/suggestions-sections";
+import { CommentsSection } from "../sections/comments-section";
+import { SuggestionsSection } from "../sections/suggestions-section";
 import { VideoSection } from "../sections/video-section";
 
 interface VideoViewProps {
