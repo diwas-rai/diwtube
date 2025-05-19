@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { UserAvatar } from "@/components/user-avatar";
-import { SubscriptionButton } from "@/modules/subscriptions/ui/components/susbcription-button";
+import { SubscriptionButton } from "@/modules/subscriptions/ui/components/subscription-button";
 import { UserInfo } from "@/modules/users/ui/components/user-info";
 import { useAuth } from "@clerk/nextjs";
 import Link from "next/link";
