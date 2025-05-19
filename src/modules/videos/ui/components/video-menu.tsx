@@ -17,7 +17,7 @@ interface VideoMenuProps {
 // TODO: implement more functionality for menu
 export const VideoMenu = ({ videoId, variant, onRemove }: VideoMenuProps) => {
     const onShare = () => {
-        const fullUrl = `${process.env.NEXT_PUBLIC_URL}/videos.${videoId}`
+        const fullUrl = `${process.env.NEXT_PUBLIC_URL}/videos/${videoId}`
         navigator.clipboard.writeText(fullUrl);
         toast.success("Link copied to clipboard")
     }
