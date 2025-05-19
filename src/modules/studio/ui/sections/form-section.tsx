@@ -39,6 +39,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ThumbnailGenerateModal } from "../components/thumbnail-generate-modal copy";
 import { ThumbnailUploadModal } from "../components/thumbnail-upload-modal";
 
 interface FormSectionProps {
@@ -68,6 +69,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
     const [video] = trpc.studio.getOne.useSuspenseQuery({ id: videoId });
     const [categories] = trpc.categories.getMany.useSuspenseQuery();
     const [thumbnailModalOpen, setThumbnailModalOpen] = useState(false);
+    const [thumbnailGenerateModalOpen, setThumbnailGenerateModalOpen] = useState(false);
 
     const update = trpc.videos.update.useMutation({
         onSuccess: () => {
@@ -148,6 +150,11 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
 
     return (
         <>
+            <ThumbnailGenerateModal
+                open={thumbnailGenerateModalOpen}
+                onOpenChange={setThumbnailGenerateModalOpen}
+                videoId={videoId}
+            />
             <ThumbnailUploadModal
                 open={thumbnailModalOpen}
                 onOpenChange={setThumbnailModalOpen}
@@ -310,7 +317,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                                                         </DropdownMenuItem>
                                                         <DropdownMenuItem
                                                             onClick={() =>
-                                                                generateTitle.mutate({ id: videoId })
+                                                                setThumbnailGenerateModalOpen(true)
                                                             }
                                                         >
                                                             <SparklesIcon className="mr-1 size-4" />
