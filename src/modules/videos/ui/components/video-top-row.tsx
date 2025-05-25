@@ -13,11 +13,11 @@ interface VideoTopRowProps {
 export const VideoTopRow = ({ video }: VideoTopRowProps) => {
     // TODO: views hardcoded for now, change this once views are tracked
     const compactViews = useMemo(() => {
-        return Intl.NumberFormat("en", { notation: "compact" }).format(6969);
-    }, []);
+        return Intl.NumberFormat("en", { notation: "compact" }).format(video.viewCount);
+    }, [video.viewCount]);
     const expandedViews = useMemo(() => {
-        return Intl.NumberFormat("en", { notation: "standard" }).format(6969);
-    }, []);
+        return Intl.NumberFormat("en", { notation: "standard" }).format(video.viewCount);
+    }, [video.viewCount]);
 
     const compactDate = useMemo(() => {
         return formatDistanceToNow(video.createdAt, { addSuffix: true });
