@@ -1,5 +1,15 @@
 import { relations } from "drizzle-orm";
-import { integer, pgEnum, pgTable, text, timestamp, uniqueIndex, uuid, varchar } from "drizzle-orm/pg-core";
+import {
+    integer,
+    pgEnum,
+    pgTable,
+    primaryKey,
+    text,
+    timestamp,
+    uniqueIndex,
+    uuid,
+    varchar,
+} from "drizzle-orm/pg-core";
 import { createInsertSchema, createSelectSchema, createUpdateSchema } from "drizzle-zod";
 // use text instead of varchar for fields where unsure of length
 export const users = pgTable(
@@ -18,6 +28,7 @@ export const users = pgTable(
 
 export const userRelations = relations(users, ({ many }) => ({
     videos: many(videos), // user can have many videos
+    videoViews: many(videoViews) // user can have many video views
 }));
 
 export const categories = pgTable(
@@ -68,7 +79,7 @@ export const videoInsertSchema = createInsertSchema(videos);
 export const videoUpdateSchema = createUpdateSchema(videos);
 export const videoSelectSchema = createSelectSchema(videos);
 
-export const videoRelations = relations(videos, ({ one }) => ({
+export const videoRelations = relations(videos, ({ one, many }) => ({
     // videos can only have one user (uploader)
     user: one(users, {
         fields: [videos.userId],
@@ -79,4 +90,41 @@ export const videoRelations = relations(videos, ({ one }) => ({
         fields: [videos.categoryId],
         references: [categories.id],
     }),
+    // videos can have many views
+    videoViews: many(videoViews),
 }));
+
+export const videoViews = pgTable(
+    "video_views",
+    {
+        userId: uuid("user_id")
+            .references(() => users.id, { onDelete: "cascade" })
+            .notNull(),
+        videoId: uuid("video_id")
+            .references(() => videos.id, { onDelete: "cascade" })
+            .notNull(),
+        createdAt: timestamp("created_at").defaultNow().notNull(),
+        updatedAt: timestamp("updated_at").defaultNow().notNull(),
+    },
+    (t) => [
+        primaryKey({
+            name: "video_views_pk",
+            columns: [t.userId, t.videoId],
+        }),
+    ]
+);
+
+export const videoViewRelations = relations(videoViews, ({ one }) => ({
+    users: one(users, {
+        fields: [videoViews.userId],
+        references: [users.id],
+    }),
+    videos: one(videos, {
+        fields: [videoViews.videoId],
+        references: [videos.id],
+    }),
+}));
+
+export const videoViewSelectSchema = createSelectSchema(videoViews);
+export const videoViewInsertSchema = createInsertSchema(videoViews);
+export const videoViewUpdateSchema = createUpdateSchema(videoViews);
