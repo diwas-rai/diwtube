@@ -185,7 +185,7 @@ export const subscriptions = pgTable(
     },
     (t) => [
         primaryKey({
-            name: "susbcriptions_pk",
+            name: "subscriptions_pk",
             columns: [t.viewerId, t.creatorId],
         }),
     ]
