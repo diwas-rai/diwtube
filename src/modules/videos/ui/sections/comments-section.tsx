@@ -1,6 +1,7 @@
 "use client";
 
 import { Skeleton } from "@/components/ui/skeleton";
+import { CommentForm } from "@/modules/comments/ui/components/comment-form";
 import { trpc } from "@/trpc/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -26,5 +27,14 @@ const CommentsSectionSkeleton = () => {
 const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
     const [comments] = trpc.comments.getMany.useSuspenseQuery({ videoId });
 
-    return <div>{JSON.stringify(comments)}</div>;
+    return (
+        <div className="mt-6">
+            <div className="flex flex-col gap-6">
+                {/* update this to use correct comment count */}
+                <h1>0 comments</h1>
+                <CommentForm videoId={videoId} />
+            </div>
+            {JSON.stringify(comments)}
+        </div>
+    );
 };
