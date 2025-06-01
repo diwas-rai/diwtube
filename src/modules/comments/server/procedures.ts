@@ -23,8 +23,8 @@ export const commentsRouter = createTRPCRouter({
     getMany: baseProcedure.input(z.object({ videoId: z.string().uuid() })).query(async ({ input }) => {
         const { videoId } = input;
 
-        const [data] = await db.select().from(comments).where(eq(comments.videoId, videoId));
+        const data = await db.select().from(comments).where(eq(comments.videoId, videoId));
 
-        return data ?? [];
+        return data;
     }),
 });
