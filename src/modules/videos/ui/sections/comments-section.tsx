@@ -2,6 +2,7 @@
 
 import { Skeleton } from "@/components/ui/skeleton";
 import { CommentForm } from "@/modules/comments/ui/components/comment-form";
+import { CommentItem } from "@/modules/comments/ui/components/comment-item";
 import { trpc } from "@/trpc/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -33,8 +34,12 @@ const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
                 {/* update this to use correct comment count */}
                 <h1>0 comments</h1>
                 <CommentForm videoId={videoId} />
+                <div className="mt-2 flex flex-col gap-4">
+                    {comments.map((comment) => (
+                        <CommentItem key={comment.id} comment={comment} />
+                    ))}
+                </div>
             </div>
-            {JSON.stringify(comments)}
         </div>
     );
 };
