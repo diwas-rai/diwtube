@@ -25,6 +25,6 @@ export const commentsRouter = createTRPCRouter({
 
         const [data] = await db.select().from(comments).where(eq(comments.videoId, videoId));
 
-        return data;
+        return data ?? [];
     }),
 });
