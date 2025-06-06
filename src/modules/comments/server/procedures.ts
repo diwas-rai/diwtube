@@ -31,28 +31,30 @@ export const commentsRouter = createTRPCRouter({
         .query(async ({ input }) => {
             const { videoId, cursor, limit } = input;
 
-            const [totalData] = await db
-                .select({ count: count() })
-                .from(comments)
-                .where(eq(comments.videoId, videoId));
+            const [totalData, data] = await Promise.all([
+                db.select({ count: count() }).from(comments).where(eq(comments.videoId, videoId)),
 
-            const data = await db
-                .select({ ...getTableColumns(comments), user: users })
-                .from(comments)
-                .innerJoin(users, eq(comments.userId, users.id))
-                .where(
-                    and(
-                        eq(comments.videoId, videoId),
-                        cursor
-                            ? or(
-                                  lt(comments.updatedAt, cursor.updatedAt),
-                                  and(eq(comments.updatedAt, cursor?.updatedAt), lt(comments.id, cursor.id))
-                              )
-                            : undefined
+                db
+                    .select({ ...getTableColumns(comments), user: users })
+                    .from(comments)
+                    .innerJoin(users, eq(comments.userId, users.id))
+                    .where(
+                        and(
+                            eq(comments.videoId, videoId),
+                            cursor
+                                ? or(
+                                      lt(comments.updatedAt, cursor.updatedAt),
+                                      and(
+                                          eq(comments.updatedAt, cursor?.updatedAt),
+                                          lt(comments.id, cursor.id)
+                                      )
+                                  )
+                                : undefined
+                        )
                     )
-                )
-                .orderBy(desc(comments.updatedAt), desc(comments.id))
-                .limit(limit + 1);
+                    .orderBy(desc(comments.updatedAt), desc(comments.id))
+                    .limit(limit + 1),
+            ]);
 
             const hasMore = data.length > limit;
 
@@ -71,7 +73,7 @@ export const commentsRouter = createTRPCRouter({
             return {
                 items,
                 nextCursor,
-                totalCount: totalData.count
+                totalCount: totalData[0].count,
             };
         }),
 });
