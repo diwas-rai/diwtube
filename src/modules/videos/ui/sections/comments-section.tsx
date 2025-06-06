@@ -50,10 +50,10 @@ const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
                         ))}
                 </div>
                 <InfiniteScroll
-                    isManual
                     hasNextPage={query.hasNextPage}
                     isFetchingNextPage={query.isFetchingNextPage}
                     fetchNextPage={query.fetchNextPage}
+                    infiniteFetchingComponent={<CommentsSectionSkeleton />}
                 />
             </div>
         </div>
