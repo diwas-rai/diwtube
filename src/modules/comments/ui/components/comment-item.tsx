@@ -67,12 +67,12 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuItem onClick={() => {}}>
-                            <MessageSquareIcon className="size=4" />
+                            <MessageSquareIcon className="size-4" />
                             Reply
                         </DropdownMenuItem>
                         {comment.user.clerkId === userId && (
                             <DropdownMenuItem onClick={() => remove.mutate({ id: comment.id })}>
-                                <Trash2Icon className="size=4" />
+                                <Trash2Icon className="size-4" />
                                 Delete
                             </DropdownMenuItem>
                         )}
