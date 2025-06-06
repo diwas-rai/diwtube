@@ -36,8 +36,7 @@ const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
     return (
         <div className="mt-6">
             <div className="flex flex-col gap-6">
-                {/* TODO: make this work again */}
-                <h1>{} comments</h1>
+                <h1>{comments.pages[0].totalCount} comments</h1>
                 <CommentForm videoId={videoId} />
                 <div className="mt-2 flex flex-col gap-4">
                     {comments.pages
