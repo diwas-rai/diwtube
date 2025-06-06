@@ -1,9 +1,11 @@
 "use client";
 
-import { Skeleton } from "@/components/ui/skeleton";
+import { InfiniteScroll } from "@/components/infinite-scroll";
+import { DEFAULT_LIMIT } from "@/constants";
 import { CommentForm } from "@/modules/comments/ui/components/comment-form";
 import { CommentItem } from "@/modules/comments/ui/components/comment-item";
 import { trpc } from "@/trpc/client";
+import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -22,22 +24,37 @@ export const CommentsSection = ({ videoId }: CommentsSectionProps) => {
 };
 
 const CommentsSectionSkeleton = () => {
-    return <Skeleton />;
+    return (
+        <div className="mt-6 flex items-center justify-center">
+            <Loader2Icon className="size-7 animate-spin text-muted-foreground" />
+        </div>
+    );
 };
 
 const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
-    const [comments] = trpc.comments.getMany.useSuspenseQuery({ videoId });
+    const [comments, query] = trpc.comments.getMany.useSuspenseInfiniteQuery(
+        { videoId, limit: DEFAULT_LIMIT },
+        { getNextPageParam: (lastPage) => lastPage.nextCursor }
+    );
 
     return (
         <div className="mt-6">
             <div className="flex flex-col gap-6">
-                <h1>{comments.length} comments</h1>
+                <h1>{comments.pages.length > 0 ? comments.pages[0].totalCount : 0} comments</h1>
                 <CommentForm videoId={videoId} />
                 <div className="mt-2 flex flex-col gap-4">
-                    {comments.map((comment) => (
-                        <CommentItem key={comment.id} comment={comment} />
-                    ))}
+                    {comments.pages
+                        .flatMap((pages) => pages.items)
+                        .map((comment) => (
+                            <CommentItem key={comment.id} comment={comment} />
+                        ))}
                 </div>
+                <InfiniteScroll
+                    hasNextPage={query.hasNextPage}
+                    isFetchingNextPage={query.isFetchingNextPage}
+                    fetchNextPage={query.fetchNextPage}
+                    infiniteFetchingComponent={<CommentsSectionSkeleton />}
+                />
             </div>
         </div>
     );

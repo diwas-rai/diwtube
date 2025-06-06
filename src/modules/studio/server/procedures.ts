@@ -1,9 +1,9 @@
-import { z } from "zod";
 import { db } from "@/db";
 import { videos } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import { and, desc, eq, lt, or } from "drizzle-orm";
 import { TRPCError } from "@trpc/server";
+import { and, desc, eq, lt, or } from "drizzle-orm";
+import { z } from "zod";
 
 export const studioRouter = createTRPCRouter({
     getOne: protectedProcedure.input(z.object({ id: z.string().uuid() })).query(async ({ ctx, input }) => {

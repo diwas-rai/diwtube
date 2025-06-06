@@ -1,5 +1,5 @@
 import { useIntersectionObserver } from "@/hooks/use-intersection-observer";
-import { useEffect } from "react";
+import React, { useEffect } from "react";
 import { Button } from "./ui/button";
 
 interface InfiniteScrollProps {
@@ -7,6 +7,7 @@ interface InfiniteScrollProps {
     hasNextPage: boolean;
     isFetchingNextPage: boolean;
     fetchNextPage: () => void;
+    infiniteFetchingComponent?: React.ReactNode;
 }
 
 export const InfiniteScroll = ({
@@ -14,6 +15,7 @@ export const InfiniteScroll = ({
     hasNextPage,
     isFetchingNextPage,
     fetchNextPage,
+    infiniteFetchingComponent,
 }: InfiniteScrollProps) => {
     const { targetRef, isIntersecting } = useIntersectionObserver({
         threshold: 0.5,
@@ -30,15 +32,13 @@ export const InfiniteScroll = ({
         <div className="flex flex-col items-center gap-4 p-4">
             <div ref={targetRef} className="h-1" />
             {hasNextPage ? (
-                <Button
-                    variant="secondary"
-                    onClick={() => {
-                        fetchNextPage();
-                    }}
-                    disabled={!hasNextPage || isFetchingNextPage}
-                >
-                    {isFetchingNextPage ? "Loading..." : "Load More"}
-                </Button>
+                isManual ? (
+                    <Button onClick={fetchNextPage} disabled={isFetchingNextPage}>
+                        {isFetchingNextPage ? "Loading..." : "Load More"}
+                    </Button>
+                ) : (
+                    infiniteFetchingComponent
+                )
             ) : (
                 <p className="text-xs text-muted-foreground">You have reached the end!</p>
             )}
