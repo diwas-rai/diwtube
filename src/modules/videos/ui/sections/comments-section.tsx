@@ -1,11 +1,11 @@
 "use client";
 
 import { InfiniteScroll } from "@/components/infinite-scroll";
-import { Skeleton } from "@/components/ui/skeleton";
 import { DEFAULT_LIMIT } from "@/constants";
 import { CommentForm } from "@/modules/comments/ui/components/comment-form";
 import { CommentItem } from "@/modules/comments/ui/components/comment-item";
 import { trpc } from "@/trpc/client";
+import { Loader2Icon } from "lucide-react";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
@@ -24,7 +24,11 @@ export const CommentsSection = ({ videoId }: CommentsSectionProps) => {
 };
 
 const CommentsSectionSkeleton = () => {
-    return <Skeleton />;
+    return (
+        <div className="mt-6 flex items-center justify-center">
+            <Loader2Icon className="size-7 animate-spin text-muted-foreground" />
+        </div>
+    );
 };
 
 const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
