@@ -66,7 +66,9 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuItem onClick={() => {}}>
+                        <DropdownMenuItem onClick={() => {
+                            // TODO: implement reply functionality
+                        }}>
                             <MessageSquareIcon className="size-4" />
                             Reply
                         </DropdownMenuItem>
