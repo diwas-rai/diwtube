@@ -4,7 +4,7 @@ import Link from "next/link";
 import { CommentsGetManyOutput } from "../../types";
 
 interface CommentItemProps {
-    comment: CommentsGetManyOutput[number];
+    comment: CommentsGetManyOutput["items"][number];
 }
 
 export const CommentItem = ({ comment }: CommentItemProps) => {
