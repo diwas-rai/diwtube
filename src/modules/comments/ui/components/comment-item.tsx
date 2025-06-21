@@ -44,6 +44,32 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
     },
   });
 
+  const like = trpc.commentReactions.like.useMutation({
+    onSuccess: () => {
+      utils.comments.getMany.invalidate({ videoId: comment.videoId });
+    },
+    onError: (error) => {
+      toast.error("Something went wrong");
+
+      if (error.data?.code === "UNAUTHORIZED") {
+        clerk.openSignIn();
+      }
+    },
+  });
+
+  const dislike = trpc.commentReactions.dislike.useMutation({
+    onSuccess: () => {
+      utils.comments.getMany.invalidate({ videoId: comment.videoId });
+    },
+    onError: (error) => {
+      toast.error("Something went wrong");
+
+      if (error.data?.code === "UNAUTHORIZED") {
+        clerk.openSignIn();
+      }
+    },
+  });
+
   return (
     <div>
       <div className="flex gap-4">
@@ -70,10 +96,10 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
             <div className="flex items-center">
               <Button
                 className="size-8"
-                disabled={false}
+                disabled={like.isPending}
                 variant="ghost"
                 size="icon"
-                onClick={() => {}}
+                onClick={() => like.mutate({ commentId: comment.id })}
               >
                 <ThumbsUpIcon
                   className={cn(
@@ -86,10 +112,10 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
               </span>
               <Button
                 className="size-8"
-                disabled={false}
+                disabled={dislike.isPending}
                 variant="ghost"
                 size="icon"
-                onClick={() => {}}
+                onClick={() => dislike.mutate({ commentId: comment.id })}
               >
                 <ThumbsDownIcon
                   className={cn(
