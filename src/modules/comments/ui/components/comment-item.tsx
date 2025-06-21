@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/user-avatar";
 import { cn } from "@/lib/utils";
@@ -11,11 +11,11 @@ import { trpc } from "@/trpc/client";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";
 import {
-    MessageSquareIcon,
-    MoreVerticalIcon,
-    ThumbsDownIcon,
-    ThumbsUpIcon,
-    Trash2Icon,
+  MessageSquareIcon,
+  MoreVerticalIcon,
+  ThumbsDownIcon,
+  ThumbsUpIcon,
+  Trash2Icon,
 } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
@@ -75,9 +75,15 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
                 size="icon"
                 onClick={() => {}}
               >
-                <ThumbsUpIcon className={cn()} />
+                <ThumbsUpIcon
+                  className={cn(
+                    comment.viewerReaction === "like" && "fill-black"
+                  )}
+                />
               </Button>
-              <span className="text-xs text-muted-foreground">0</span>
+              <span className="text-xs text-muted-foreground">
+                {comment.likeCount}
+              </span>
               <Button
                 className="size-8"
                 disabled={false}
@@ -85,9 +91,15 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
                 size="icon"
                 onClick={() => {}}
               >
-                <ThumbsDownIcon className={cn()} />
+                <ThumbsDownIcon
+                  className={cn(
+                    comment.viewerReaction === "dislike" && "fill-black"
+                  )}
+                />
               </Button>
-              <span className="text-xs text-muted-foreground">0</span>
+              <span className="text-xs text-muted-foreground">
+                {comment.dislikeCount}
+              </span>
             </div>
           </div>
         </div>
