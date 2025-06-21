@@ -6,36 +6,41 @@ import { and, eq } from "drizzle-orm";
 import { z } from "zod";
 
 export const subscriptionsRouter = createTRPCRouter({
-    remove: protectedProcedure
-        .input(z.object({ userId: z.string().uuid() }))
-        .mutation(async ({ input, ctx }) => {
-            const { userId } = input;
+  remove: protectedProcedure
+    .input(z.object({ userId: z.string().uuid() }))
+    .mutation(async ({ input, ctx }) => {
+      const { userId } = input;
 
-            if (userId === ctx.user.id) {
-                throw new TRPCError({ code: "BAD_REQUEST" });
-            }
+      if (userId === ctx.user.id) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
 
-            const [removeSubscription] = await db
-                .delete(subscriptions)
-                .where(and(eq(subscriptions.viewerId, ctx.user.id), eq(subscriptions.creatorId, userId)))
-                .returning();
+      const [removeSubscription] = await db
+        .delete(subscriptions)
+        .where(
+          and(
+            eq(subscriptions.viewerId, ctx.user.id),
+            eq(subscriptions.creatorId, userId)
+          )
+        )
+        .returning();
 
-            return removeSubscription;
-        }),
-    create: protectedProcedure
-        .input(z.object({ userId: z.string().uuid() }))
-        .mutation(async ({ input, ctx }) => {
-            const { userId } = input;
+      return removeSubscription;
+    }),
+  create: protectedProcedure
+    .input(z.object({ userId: z.string().uuid() }))
+    .mutation(async ({ input, ctx }) => {
+      const { userId } = input;
 
-            if (userId === ctx.user.id) {
-                throw new TRPCError({ code: "BAD_REQUEST" });
-            }
+      if (userId === ctx.user.id) {
+        throw new TRPCError({ code: "BAD_REQUEST" });
+      }
 
-            const [createdSubscription] = await db
-                .insert(subscriptions)
-                .values({ viewerId: ctx.user.id, creatorId: userId })
-                .returning();
+      const [createdSubscription] = await db
+        .insert(subscriptions)
+        .values({ viewerId: ctx.user.id, creatorId: userId })
+        .returning();
 
-            return createdSubscription;
-        }),
+      return createdSubscription;
+    }),
 });
