@@ -1,15 +1,22 @@
 import { Button } from "@/components/ui/button";
 import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { UserAvatar } from "@/components/user-avatar";
+import { cn } from "@/lib/utils";
 import { trpc } from "@/trpc/client";
 import { useAuth, useClerk } from "@clerk/nextjs";
 import { formatDistanceToNow } from "date-fns";
-import { MessageSquareIcon, MoreVerticalIcon, Trash2Icon } from "lucide-react";
+import {
+    MessageSquareIcon,
+    MoreVerticalIcon,
+    ThumbsDownIcon,
+    ThumbsUpIcon,
+    Trash2Icon,
+} from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 import { CommentsGetManyOutput } from "../../types";
@@ -59,6 +66,30 @@ export const CommentItem = ({ comment }: CommentItemProps) => {
             </div>
           </Link>
           <p className="text-sm">{comment.value}</p>
+          <div className="mt-1 flex items-center gap-2">
+            <div className="flex items-center">
+              <Button
+                className="size-8"
+                disabled={false}
+                variant="ghost"
+                size="icon"
+                onClick={() => {}}
+              >
+                <ThumbsUpIcon className={cn()} />
+              </Button>
+              <span className="text-xs text-muted-foreground">0</span>
+              <Button
+                className="size-8"
+                disabled={false}
+                variant="ghost"
+                size="icon"
+                onClick={() => {}}
+              >
+                <ThumbsDownIcon className={cn()} />
+              </Button>
+              <span className="text-xs text-muted-foreground">0</span>
+            </div>
+          </div>
         </div>
 
         <DropdownMenu>
