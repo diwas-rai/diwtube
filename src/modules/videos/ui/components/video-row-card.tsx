@@ -56,7 +56,7 @@ export const VideoRowCard = ({ data, size, onRemove }: VideoRowCardProps) => {
 
   return (
     <div className={videoRowCardVariants({ size })}>
-      <Link href={`/vidos/${data.id}`} className={thumbnailVariants({ size })}>
+      <Link href={`/videos/${data.id}`} className={thumbnailVariants({ size })}>
         <VideoThumbnail
           imageUrl={data.thumbnailUrl}
           previewUrl={data.previewUrl}
@@ -117,7 +117,7 @@ export const VideoRowCard = ({ data, size, onRemove }: VideoRowCardProps) => {
             )}
           </Link>
 
-          <div className="flex=none">
+          <div className="flex-none">
             <VideoMenu videoId={data.id} onRemove={onRemove} />
           </div>
         </div>
