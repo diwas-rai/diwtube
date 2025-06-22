@@ -45,6 +45,7 @@ import {
   Loader2Icon,
   LockIcon,
   MoreVerticalIcon,
+  RefreshCwIcon,
   RotateCcwIcon,
   SparklesIcon,
   TrashIcon,
@@ -158,6 +159,17 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
   const [thumbnailModalOpen, setThumbnailModalOpen] = useState(false);
   const [thumbnailGenerateModalOpen, setThumbnailGenerateModalOpen] =
     useState(false);
+
+  const revalidate = trpc.videos.revalidate.useMutation({
+    onSuccess: () => {
+      utils.studio.getMany.invalidate();
+      utils.studio.getOne.invalidate({ id: videoId });
+      toast.success("Video revalidated");
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
 
   const update = trpc.videos.update.useMutation({
     onSuccess: () => {
@@ -279,6 +291,12 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                   >
                     <TrashIcon className="mr-2 size-4" />
                     Delete
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => revalidate.mutate({ id: videoId })}
+                  >
+                    <RefreshCwIcon className="mr-2 size-4" />
+                    Revalidate
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
