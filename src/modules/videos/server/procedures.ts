@@ -167,7 +167,7 @@ export const videosRouter = createTRPCRouter({
         .update(videos)
         .set({
           muxStatus: asset.status,
-          muxPlaybackId: asset.playback_ids?.[0].id,
+          muxPlaybackId: asset.playback_ids?.[0].id ?? null,
           muxAssetId: asset.id,
           duration: asset.duration ? Math.round(asset.duration * 1000) : 0,
         })
