@@ -32,7 +32,7 @@ const CommentsSectionSkeleton = () => {
 };
 
 const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
-  const [comments, query] = trpc.comments.getMany.useSuspenseInfiniteQuery(
+  const [{ pages }, query] = trpc.comments.getMany.useSuspenseInfiniteQuery(
     { videoId, limit: DEFAULT_LIMIT },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
@@ -40,13 +40,10 @@ const CommentsSectionSuspense = ({ videoId }: CommentsSectionProps) => {
   return (
     <div className="mt-6">
       <div className="flex flex-col gap-6">
-        <h1>
-          {comments.pages.length > 0 ? comments.pages[0].totalCount : 0}{" "}
-          comments
-        </h1>
+        <h1>{pages.length > 0 ? pages[0].totalCount : 0} comments</h1>
         <CommentForm videoId={videoId} />
         <div className="mt-2 flex flex-col gap-4">
-          {comments.pages
+          {pages
             .flatMap((pages) => pages.items)
             .map((comment) => (
               <CommentItem key={comment.id} comment={comment} />
