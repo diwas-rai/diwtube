@@ -84,7 +84,7 @@ const VideosSectionSkeleton = () => {
 };
 
 export const VideosSectionsSuspense = () => {
-  const [videos, query] = trpc.studio.getMany.useSuspenseInfiniteQuery(
+  const [{ pages }, query] = trpc.studio.getMany.useSuspenseInfiniteQuery(
     { limit: DEFAULT_LIMIT },
     { getNextPageParam: (lastPage) => lastPage.nextCursor }
   );
@@ -105,7 +105,7 @@ export const VideosSectionsSuspense = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {videos.pages.flatMap((page) =>
+            {pages.flatMap((page) =>
               page.items.map((video) => (
                 <Link
                   href={`/studio/videos/${video.id}`}
