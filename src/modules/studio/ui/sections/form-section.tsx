@@ -45,6 +45,7 @@ import {
   Loader2Icon,
   LockIcon,
   MoreVerticalIcon,
+  RefreshCwIcon,
   RotateCcwIcon,
   SparklesIcon,
   TrashIcon,
@@ -159,6 +160,17 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
   const [thumbnailGenerateModalOpen, setThumbnailGenerateModalOpen] =
     useState(false);
 
+  const revalidate = trpc.videos.revalidate.useMutation({
+    onSuccess: () => {
+      utils.studio.getMany.invalidate();
+      utils.studio.getOne.invalidate({ id: videoId });
+      toast.success("Video revalidated");
+    },
+    onError: () => {
+      toast.error("Something went wrong");
+    },
+  });
+
   const update = trpc.videos.update.useMutation({
     onSuccess: () => {
       utils.studio.getMany.invalidate();
@@ -264,7 +276,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
             <div className="flex items-center gap-x-2">
               {/* TODO: toggle permissions for this save button*/}
               <Button type="submit" disabled={update.isPending}>
-                Save
+                {update.isPending ? "Saving..." : "Save"}
               </Button>
 
               <DropdownMenu>
@@ -276,9 +288,35 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
                 <DropdownMenuContent align="end">
                   <DropdownMenuItem
                     onClick={() => remove.mutate({ id: videoId })}
+                    disabled={remove.isPending}
                   >
-                    <TrashIcon className="mr-2 size-4" />
-                    Delete
+                    {remove.isPending ? (
+                      <>
+                        <Loader2Icon className="mr-2 size-4 animate-spin" />
+                        Deleting...
+                      </>
+                    ) : (
+                      <>
+                        <TrashIcon className="mr-2 size-4" />
+                        Delete
+                      </>
+                    )}
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => revalidate.mutate({ id: videoId })}
+                    disabled={revalidate.isPending}
+                  >
+                    {revalidate.isPending ? (
+                      <>
+                        <Loader2Icon className="mr-2 size-4 animate-spin" />
+                        Revalidating...
+                      </>
+                    ) : (
+                      <>
+                        <RefreshCwIcon className="mr-2 size-4" />
+                        Revalidate
+                      </>
+                    )}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
