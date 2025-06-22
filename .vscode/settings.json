@@ -1,5 +1,6 @@
 {
   "gitlens.advanced.blame.customArguments": [
     "--ignore-revs-file .git-blame-ignore-revs"
-  ]
+  ],
+  "editor.tabSize": 2
 }
