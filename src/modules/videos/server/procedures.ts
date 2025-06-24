@@ -162,6 +162,7 @@ export const videosRouter = createTRPCRouter({
       }
 
       const asset = await mux.video.assets.retrieve(directUpload.asset_id);
+      const textTrack = asset.tracks?.find((track) => track.type === "text");
 
       const [updatedVideo] = await db
         .update(videos)
@@ -170,6 +171,8 @@ export const videosRouter = createTRPCRouter({
           muxPlaybackId: asset.playback_ids?.[0].id ?? null,
           muxAssetId: asset.id,
           duration: asset.duration ? Math.round(asset.duration * 1000) : 0,
+          muxTrackId: textTrack?.id ?? null,
+          muxTrackStatus: textTrack?.status ?? "errored",
         })
         .where(and(eq(videos.id, input.id), eq(videos.userId, userId)))
         .returning();
