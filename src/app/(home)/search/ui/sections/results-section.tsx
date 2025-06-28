@@ -6,6 +6,8 @@ import { useIsMobile } from "@/hooks/use-mobile";
 import { VideoGridCard } from "@/modules/videos/ui/components/video-grid-card";
 import { VideoRowCard } from "@/modules/videos/ui/components/video-row-card";
 import { trpc } from "@/trpc/client";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 interface ResultsSectionProps {
   query: string | undefined;
@@ -13,6 +15,19 @@ interface ResultsSectionProps {
 }
 
 export const ResultsSection = ({ query, categoryId }: ResultsSectionProps) => {
+  return (
+    <Suspense>
+      <ErrorBoundary fallback={"Error..."}>
+        <ResultsSectionSuspense query={query} categoryId={categoryId} />
+      </ErrorBoundary>
+    </Suspense>
+  );
+};
+
+export const ResultsSectionSuspense = ({
+  query,
+  categoryId,
+}: ResultsSectionProps) => {
   const isMobile = useIsMobile();
   const [results, { fetchNextPage, hasNextPage, isFetchingNextPage }] =
     trpc.search.getMany.useSuspenseInfiniteQuery(
