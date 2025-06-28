@@ -3,6 +3,8 @@
 import { InfiniteScroll } from "@/components/infinite-scroll";
 import { DEFAULT_LIMIT } from "@/constants";
 import { trpc } from "@/trpc/client";
+import { Suspense } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { VideoGridCard } from "../components/video-grid-card";
 import { VideoRowCard } from "../components/video-row-card";
 
@@ -10,7 +12,21 @@ interface SuggestionsSectionProp {
   videoId: string;
   isManual?: boolean;
 }
+
 export const SuggestionsSection = ({
+  videoId,
+  isManual,
+}: SuggestionsSectionProp) => {
+  return (
+    <Suspense>
+      <ErrorBoundary fallback={<p>Error...</p>}>
+        <SuggestionsSectionSuspense videoId={videoId} isManual={isManual} />
+      </ErrorBoundary>
+    </Suspense>
+  );
+};
+
+const SuggestionsSectionSuspense = ({
   videoId,
   isManual,
 }: SuggestionsSectionProp) => {

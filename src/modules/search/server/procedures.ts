@@ -1,15 +1,15 @@
 import { db } from "@/db";
 import { users, videos, videoViews } from "@/db/schema";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
-import { TRPCError } from "@trpc/server";
-import { and, desc, eq, getTableColumns, lt, not, or } from "drizzle-orm";
+import { baseProcedure, createTRPCRouter } from "@/trpc/init";
+import { and, desc, eq, getTableColumns, ilike, lt, or } from "drizzle-orm";
 import { z } from "zod";
 
-export const suggestionsRouter = createTRPCRouter({
-  getMany: protectedProcedure
+export const searchRouter = createTRPCRouter({
+  getMany: baseProcedure
     .input(
       z.object({
-        videoId: z.string().uuid(),
+        query: z.string().nullish(),
+        categoryId: z.string().uuid().nullish(),
         cursor: z
           .object({
             id: z.string().uuid(),
@@ -20,31 +20,20 @@ export const suggestionsRouter = createTRPCRouter({
       })
     )
     .query(async ({ input }) => {
-      const { videoId, cursor, limit } = input;
-
-      const [existingVideo] = await db
-        .select()
-        .from(videos)
-        .where(eq(videos.id, videoId));
-
-      if (!existingVideo) {
-        throw new TRPCError({ code: "NOT_FOUND" });
-      }
+      const { query, categoryId, cursor, limit } = input;
 
       const data = await db
         .select({
           ...getTableColumns(videos),
           user: users,
-          viewCount: db.$count(videoViews, eq(videoViews.videoId, videoId)),
+          viewCount: db.$count(videoViews, eq(videoViews.videoId, videos.id)),
         })
         .from(videos)
+        .innerJoin(users, eq(videos.userId, users.id))
         .where(
           and(
-            not(eq(videos.id, existingVideo.id)),
-            eq(videos.visibility, "public"),
-            existingVideo.categoryId
-              ? eq(videos.categoryId, existingVideo.categoryId)
-              : undefined,
+            ilike(videos.title, `%${query}%`),
+            categoryId ? eq(videos.categoryId, categoryId) : undefined,
             cursor
               ? or(
                   lt(videos.updatedAt, cursor.updatedAt),
@@ -56,7 +45,6 @@ export const suggestionsRouter = createTRPCRouter({
               : undefined
           )
         )
-        .innerJoin(users, eq(videos.userId, users.id))
         .orderBy(desc(videos.updatedAt), desc(videos.id))
         // Add 1 to limit to check if more data to load
         .limit(limit + 1);

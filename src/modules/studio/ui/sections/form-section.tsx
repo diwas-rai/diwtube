@@ -31,6 +31,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { BASE_URL } from "@/constants";
 import { videoUpdateSchema } from "@/db/schema";
 import { snakeCaseToTitle } from "@/lib/utils";
 import { THUMBNAIL_FALLBACK } from "@/modules/videos/constants";
@@ -239,7 +240,7 @@ export const FormSectionSuspense = ({ videoId }: FormSectionProps) => {
     update.mutate(data);
   };
 
-  const fullUrl = `${process.env.NEXT_PUBLIC_URL}/videos/${videoId}`;
+  const fullUrl = `${BASE_URL}/videos/${videoId}`;
 
   const [isCopied, setIsCopied] = useState(false);
   const onCopy = async () => {
