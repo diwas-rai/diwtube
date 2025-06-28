@@ -1,5 +1,5 @@
 import { db } from "@/db";
-import { users, videoReactions, videos, videoViews } from "@/db/schema";
+import { users, videos, videoViews } from "@/db/schema";
 import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, getTableColumns, lt, not, or } from "drizzle-orm";
@@ -36,20 +36,6 @@ export const suggestionsRouter = createTRPCRouter({
           ...getTableColumns(videos),
           user: users,
           viewCount: db.$count(videoViews, eq(videoViews.videoId, videoId)),
-          likeCount: db.$count(
-            videoReactions,
-            and(
-              eq(videoReactions.videoId, videos.id),
-              eq(videoReactions.reaction, "like")
-            )
-          ),
-          dislikeCount: db.$count(
-            videoReactions,
-            and(
-              eq(videoReactions.videoId, videos.id),
-              eq(videoReactions.reaction, "dislike")
-            )
-          ),
         })
         .from(videos)
         .where(
