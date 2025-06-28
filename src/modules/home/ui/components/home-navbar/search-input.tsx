@@ -53,7 +53,7 @@ export const SearchInput = () => {
       <button
         disabled={!value.trim()}
         type="submit"
-        className="dsiabled:opacity-50 rounded-r-full border border-l-0 bg-gray-100 px-5 py-2.5 hover:bg-gray-200 disabled:cursor-not-allowed"
+        className="rounded-r-full border border-l-0 bg-gray-100 px-5 py-2.5 hover:bg-gray-200 disabled:cursor-not-allowed disabled:opacity-50"
       >
         <SearchIcon className="size-5" />
       </button>
