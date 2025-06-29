@@ -23,3 +23,15 @@ export const VideoGridCard = ({ data, onRemove }: VideoGridCardProps) => {
     </div>
   );
 };
+
+export const VideoGridCardSkeleton = () => {
+  return (
+    <div className="group flex w-full flex-col gap-2 animate-pulse">
+      <div className="w-full h-48 bg-gray-300 rounded-md" />
+      <div className="flex flex-col gap-2">
+        <div className="h-4 bg-gray-300 rounded-md w-3/4" />
+        <div className="h-4 bg-gray-300 rounded-md w-1/2" />
+      </div>
+    </div>
+  );
+};
