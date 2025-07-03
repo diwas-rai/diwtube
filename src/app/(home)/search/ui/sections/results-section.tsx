@@ -39,21 +39,18 @@ export const ResultsSectionSuspense = ({
       }
     );
 
+  const videos = results.pages.flatMap((page) => page.items);
   return (
     <>
       <div className="flex flex-col gap-4 gap-y-10 md:hidden">
-        {results.pages.flatMap((page) =>
-          page.items.map((video) => (
-            <VideoGridCard key={video.id} data={video} />
-          ))
-        )}
+        {videos.map((video) => (
+          <VideoGridCard key={video.id} data={video} />
+        ))}
       </div>
       <div className="hidden flex-col gap-4 md:flex">
-        {results.pages.flatMap((page) =>
-          page.items.map((video) => (
-            <VideoRowCard key={video.id} data={video} />
-          ))
-        )}
+        {videos.map((video) => (
+          <VideoRowCard key={video.id} data={video} />
+        ))}
       </div>
       <InfiniteScroll
         hasNextPage={hasNextPage}
