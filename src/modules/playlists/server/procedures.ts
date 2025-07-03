@@ -70,7 +70,7 @@ export const playlistsRouter = createTRPCRouter({
       const nextCursor = hasMore
         ? {
             id: lastItem.id,
-            updatedAt: lastItem.updatedAt,
+            viewedAt: lastItem.viewedAt,
           }
         : null;
 
