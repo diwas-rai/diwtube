@@ -13,16 +13,16 @@ import { createTRPCRouter } from "../init";
 
 export const appRouter = createTRPCRouter({
   categories: categoriesRouter,
-  studio: studioRouter,
-  videos: videosRouter,
-  videoViews: videoViewsRouter,
-  videoReactions: videoReactionsRouter,
-  subscriptions: subscriptionsRouter,
-  comments: commentsRouter,
   commentReactions: commentReactionsRouter,
-  suggestions: suggestionsRouter,
+  comments: commentsRouter,
+  playlists: playlistsRouter,
   search: searchRouter,
-  playlists: playlistsRouter
+  studio: studioRouter,
+  subscriptions: subscriptionsRouter,
+  suggestions: suggestionsRouter,
+  videoReactions: videoReactionsRouter,
+  videoViews: videoViewsRouter,
+  videos: videosRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
