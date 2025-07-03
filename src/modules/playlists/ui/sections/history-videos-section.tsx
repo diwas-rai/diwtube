@@ -40,21 +40,19 @@ const HistoryVideosSectionSuspense = () => {
       }
     );
 
+  const watchedVideos = videos.pages.flatMap((page) => page.items);
+
   return (
     <div>
       <div className="flex flex-col gap-4 gap-y-10 md:hidden">
-        {videos.pages
-          .flatMap((page) => page.items)
-          .map((video) => (
-            <VideoGridCard key={video.id} data={video} />
-          ))}
+        {watchedVideos.map((video) => (
+          <VideoGridCard key={video.id} data={video} />
+        ))}
       </div>
       <div className="hidden flex-col gap-4 md:flex">
-        {videos.pages
-          .flatMap((page) => page.items)
-          .map((video) => (
-            <VideoRowCard key={video.id} data={video} />
-          ))}
+        {watchedVideos.map((video) => (
+          <VideoRowCard key={video.id} data={video} />
+        ))}
       </div>
       <InfiniteScroll
         hasNextPage={hasNextPage}
