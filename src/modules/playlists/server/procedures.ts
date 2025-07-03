@@ -27,7 +27,7 @@ export const playlistsRouter = createTRPCRouter({
             videoId: videoReactions.videoId,
             likedAt: videoReactions.createdAt,
           })
-          .from(videoViews)
+          .from(videoReactions)
           .where(
             and(
               eq(videoReactions.userId, userId),
