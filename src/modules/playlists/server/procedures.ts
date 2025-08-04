@@ -11,7 +11,7 @@ export const playlistsRouter = createTRPCRouter({
         cursor: z
           .object({
             id: z.string().uuid(),
-            viewedAt: z.date(),
+            likedAt: z.date(),
           })
           .nullish(),
         limit: z.number().min(1).max(100),
@@ -55,9 +55,9 @@ export const playlistsRouter = createTRPCRouter({
             eq(videos.visibility, "public"),
             cursor
               ? or(
-                  lt(viewerVideoReactions.likedAt, cursor.viewedAt),
+                  lt(viewerVideoReactions.likedAt, cursor.likedAt),
                   and(
-                    eq(viewerVideoReactions.likedAt, cursor.viewedAt),
+                    eq(viewerVideoReactions.likedAt, cursor.likedAt),
                     lt(videos.id, cursor.id)
                   )
                 )
