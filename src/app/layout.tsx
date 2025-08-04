@@ -20,9 +20,6 @@ export default function RootLayout({
   return (
     <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
-        <head>
-          <meta name="apple-mobile-web-app-title" content="DiwTube" />
-        </head>
         <body className={inter.className}>
           <TRPCProvider>
             <Toaster />
