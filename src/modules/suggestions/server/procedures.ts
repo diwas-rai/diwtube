@@ -1,12 +1,12 @@
 import { db } from "@/db";
 import { users, videos, videoViews } from "@/db/schema";
-import { createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import { baseProcedure, createTRPCRouter } from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, getTableColumns, lt, not, or } from "drizzle-orm";
 import { z } from "zod";
 
 export const suggestionsRouter = createTRPCRouter({
-  getMany: protectedProcedure
+  getMany: baseProcedure 
     .input(
       z.object({
         videoId: z.string().uuid(),
