@@ -88,7 +88,7 @@ export const CommentItem = ({
         <Link href={`/users/${comment.userId}`}>
           <UserAvatar
             size={variant === "comment" ? "lg" : "sm"}
-            imageUrl={comment.user?.imageUrl ?? "/placeholder.svg"} // TODO: make this a user placeholder image
+            imageUrl={comment.user?.imageUrl ?? "/user-placeholder.svg"}
             name={comment.user?.name ?? "User"}
           />
         </Link>

@@ -89,7 +89,7 @@ export const CommentForm = ({
       >
         <UserAvatar
           size="lg"
-          imageUrl={user?.imageUrl ?? "/placeholder.svg"} // TODO: replace this with a user placeholder image
+          imageUrl={user?.imageUrl ?? "/user-placeholder.svg"} 
           name={user?.username ?? "User"}
         />
         <div className="flex-1">
