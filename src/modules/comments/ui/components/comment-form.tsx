@@ -15,6 +15,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { USER_PROFILE_FALLBACK } from "../../constants";
 
 interface CommentFormProps {
   videoId: string;
@@ -89,7 +90,7 @@ export const CommentForm = ({
       >
         <UserAvatar
           size="lg"
-          imageUrl={user?.imageUrl ?? "/placeholder.svg"} // TODO: replace this with a user placeholder image
+          imageUrl={user?.imageUrl ?? USER_PROFILE_FALLBACK} 
           name={user?.username ?? "User"}
         />
         <div className="flex-1">

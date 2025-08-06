@@ -22,6 +22,7 @@ import {
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { USER_PROFILE_FALLBACK } from "../../constants";
 import { CommentsGetManyOutput } from "../../types";
 import { CommentForm } from "./comment-form";
 import { CommentReplies } from "./comment-replies";
@@ -88,7 +89,7 @@ export const CommentItem = ({
         <Link href={`/users/${comment.userId}`}>
           <UserAvatar
             size={variant === "comment" ? "lg" : "sm"}
-            imageUrl={comment.user?.imageUrl ?? "/placeholder.svg"} // TODO: make this a user placeholder image
+            imageUrl={comment.user?.imageUrl ?? USER_PROFILE_FALLBACK}
             name={comment.user?.name ?? "User"}
           />
         </Link>
