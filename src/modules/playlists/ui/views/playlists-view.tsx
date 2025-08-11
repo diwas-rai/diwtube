@@ -1,10 +1,18 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { PlusIcon } from "lucide-react";
+import { useState } from "react";
+import { PlaylistCreateModal } from "../components/playlist-create-modal";
 
 export const PlaylistsView = () => {
+  const [PlaylistCreateModalOpen, setPlaylistCreateModalOpen] = useState(false);
+
   return (
     <div className="mx-auto mb-10 flex max-w-[2400px] flex-col gap-y-6 px-4 pt-2.5">
+      <PlaylistCreateModal
+        open={PlaylistCreateModalOpen}
+        onOpenChange={setPlaylistCreateModalOpen}
+      />
       <div className="flex items-center justify-between">
         <div>
           <div className="flex flex-row items-center gap-1">
@@ -15,7 +23,9 @@ export const PlaylistsView = () => {
           variant="outline"
           size="icon"
           className="rounded-full"
-          onClick={() => {}}
+          onClick={() => {
+            setPlaylistCreateModalOpen(true);
+          }}
         >
           {<PlusIcon />}
         </Button>
