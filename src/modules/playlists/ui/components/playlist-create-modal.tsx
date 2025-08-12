@@ -27,6 +27,7 @@ export const PlaylistCreateModal = ({
   open,
   onOpenChange,
 }: PlaylistCreateModalProps) => {
+  const utils = trpc.useUtils();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -39,6 +40,7 @@ export const PlaylistCreateModal = ({
       toast.success("Playlist created");
       form.reset();
       onOpenChange(false);
+      utils.playlists.getMany.invalidate();
     },
     onError: (error) => {
       console.error(error);
