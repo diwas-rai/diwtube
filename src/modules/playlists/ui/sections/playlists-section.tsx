@@ -6,6 +6,7 @@ import { VideoGridCardSkeleton } from "@/modules/videos/ui/components/video-grid
 import { trpc } from "@/trpc/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { PlaylistGridCard } from "../components/playlist-grid-card";
 
 export const PlaylistsSection = () => {
   return (
@@ -17,6 +18,7 @@ export const PlaylistsSection = () => {
   );
 };
 
+// TODO: Make this a skeleton for playlists instead of videos
 const PlaylistsSectionSkeleton = () => {
   return (
     <div className="flex flex-col gap-4 gap-y-10 md:hidden">
@@ -42,7 +44,7 @@ const PlaylistsSectionSuspense = () => {
         {playlists.pages
           .flatMap((page) => page.items)
           .map((playlist) => (
-            <p key={playlist.id}>{JSON.stringify(playlist)}</p>
+            <PlaylistGridCard data={playlist} key={playlist.id} />
           ))}
       </div>
       <InfiniteScroll
