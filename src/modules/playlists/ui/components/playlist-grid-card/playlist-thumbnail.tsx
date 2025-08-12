@@ -10,6 +10,21 @@ interface PlaylistThumbnailProps {
   className?: string;
 }
 
+export const PlaylistThumbnailSkeleton = () => {
+  return (
+    <div className={`relative pt-3`}>
+      <div className="relative">
+        {/* Stacking video effect skeleton */}
+        <div className="absolute -top-3 left-1/2 aspect-video w-[97%] -translate-x-1/2 animate-pulse overflow-hidden rounded-xl bg-muted"></div>
+        <div className="absolute -top-1.5 left-1/2 aspect-video w-[98.5%] -translate-x-1/2 animate-pulse overflow-hidden rounded-xl bg-muted"></div>
+
+        {/* Playlist thumbnail skeleton */}
+        <div className="relative aspect-video w-full animate-pulse overflow-hidden rounded-xl bg-muted"></div>
+      </div>
+    </div>
+  );
+};
+
 export const PlaylistThumbnail = ({
   imageUrl,
   title,
