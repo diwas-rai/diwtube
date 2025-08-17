@@ -1,6 +1,5 @@
 import { PlaylistsGetManyOutput } from "@/modules/playlists/types";
 import { formatDistanceToNow } from "date-fns";
-import Link from "next/link";
 import { useMemo } from "react";
 
 interface PlaylistInfoProps {
@@ -33,12 +32,11 @@ export const PlaylistInfo = ({ data }: PlaylistInfoProps) => {
         {data.user.name} • Playlist
       </p>
       <p className="text-xs text-muted-foreground">Updated {timeSinceUpdate}</p>
-      <Link
+      <p
         className="text-xs font-semibold text-muted-foreground hover:text-primary"
-        href={`/playlists/${data.id}`}
       >
         View full playlist
-      </Link>
+      </p>
     </div>
   );
 };
