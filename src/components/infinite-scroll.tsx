@@ -39,7 +39,11 @@ export const InfiniteScroll = ({
       <div ref={targetRef} className="h-1" />
       {hasNextPage ? (
         isManual ? (
-          <Button onClick={fetchNextPage} disabled={isFetchingNextPage}>
+          <Button
+            variant="ghost"
+            onClick={fetchNextPage}
+            disabled={isFetchingNextPage}
+          >
             {isFetchingNextPage ? "Loading..." : "Load More"}
           </Button>
         ) : (
