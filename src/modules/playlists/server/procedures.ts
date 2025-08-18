@@ -7,13 +7,50 @@ import {
   videos,
   videoViews,
 } from "@/db/schema";
-import { baseProcedure, createTRPCRouter, protectedProcedure } from "@/trpc/init";
+import {
+  baseProcedure,
+  createTRPCRouter,
+  protectedProcedure,
+} from "@/trpc/init";
 import { TRPCError } from "@trpc/server";
 import { and, desc, eq, getTableColumns, lt, or, sql } from "drizzle-orm";
 import { z } from "zod";
 
 export const playlistsRouter = createTRPCRouter({
-  getVideos: baseProcedure 
+  remove: protectedProcedure
+    .input(z.object({ playlistId: z.string().uuid() }))
+    .mutation(async ({ input, ctx }) => {
+      const { id: userId } = ctx.user;
+      const { playlistId } = input;
+
+      const [removedPlaylist] = await db
+        .delete(playlists)
+        .where(and(eq(playlists.id, playlistId), eq(playlists.userId, userId)))
+        .returning();
+
+      if (!removedPlaylist) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return removedPlaylist;
+    }),
+  getOne: baseProcedure
+    .input(z.object({ playlistId: z.string().uuid() }))
+    .query(async ({ input }) => {
+      const { playlistId } = input;
+
+      const [existingPlaylist] = await db
+        .select()
+        .from(playlists)
+        .where(eq(playlists.id, playlistId));
+
+      if (!existingPlaylist) {
+        throw new TRPCError({ code: "NOT_FOUND" });
+      }
+
+      return existingPlaylist;
+    }),
+  getVideos: baseProcedure
     .input(
       z.object({
         playlistId: z.string().uuid(),
