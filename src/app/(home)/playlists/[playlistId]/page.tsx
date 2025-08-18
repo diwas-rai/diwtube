@@ -1,7 +1,8 @@
 export const dynamic = "force-dynamic";
 
 import { DEFAULT_LIMIT } from "@/constants";
-import { trpc } from "@/trpc/server";
+import { PlaylistVideosView } from "@/modules/playlists/ui/views/playlist-videos-view";
+import { HydrateClient, trpc } from "@/trpc/server";
 
 interface PageProps {
   params: Promise<{ playlistId: string }>;
@@ -15,7 +16,11 @@ const Page = async ({ params }: PageProps) => {
     limit: DEFAULT_LIMIT,
   });
 
-  return <div>{playlistId}</div>;
+  return (
+    <HydrateClient>
+      <PlaylistVideosView playlistId={playlistId} />
+    </HydrateClient>
+  );
 };
 
 export default Page;
