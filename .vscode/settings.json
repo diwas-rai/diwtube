@@ -1,5 +1,10 @@
 {
   "gitlens.advanced.blame.customArguments": [
     "--ignore-revs-file .git-blame-ignore-revs"
-  ]
+  ],
+  "editor.formatOnSave": true,
+  "typescript.preferences.preferTypeOnlyAutoImports": true,
+  "javascript.preferences.organizeImports": {},
+  "workbench.colorTheme": "Catppuccin Mocha",
+  "editor.tabSize": 2
 }

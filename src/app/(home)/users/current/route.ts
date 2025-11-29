@@ -16,7 +16,7 @@ export const GET = async () => {
     .from(users)
     .where(eq(users.clerkId, userId));
 
-  if (!userId) {
+  if (!existingUser) {
     return redirect("/sign-in");
   }
 
