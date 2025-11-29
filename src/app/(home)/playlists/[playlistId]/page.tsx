@@ -11,6 +11,7 @@ interface PageProps {
 const Page = async ({ params }: PageProps) => {
   const { playlistId } = await params;
 
+  void trpc.playlists.getOne.prefetch({ playlistId });
   void trpc.playlists.getVideos.prefetchInfinite({
     playlistId: playlistId,
     limit: DEFAULT_LIMIT,
