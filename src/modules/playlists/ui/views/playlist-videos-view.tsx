@@ -1,3 +1,5 @@
+import { PlaylistVideosHeaderSection } from "../sections/playlist-videos-header-section";
+import { VideosSection } from "../sections/videos-section";
 
 interface PlaylistVideosViewProps {
   playlistId: string;
@@ -6,12 +8,8 @@ interface PlaylistVideosViewProps {
 export const PlaylistVideosView = ({ playlistId }: PlaylistVideosViewProps) => {
   return (
     <div className="mx-auto mb-10 flex max-w-screen-md flex-col gap-y-6 px-4 pt-2.5">
-      <div>
-        <div className="flex flex-row items-center gap-1">
-          <h1 className="text-3xl font-bold">Playlist {playlistId}</h1>
-        </div>
-      </div>
-      <p>This is where videos will go</p>
+      <PlaylistVideosHeaderSection playlistId={playlistId} />
+      <VideosSection playlistId={playlistId} />
     </div>
   );
 };
