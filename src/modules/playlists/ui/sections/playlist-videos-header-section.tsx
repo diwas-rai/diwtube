@@ -55,7 +55,7 @@ const PlaylistVideosHeaderSectionSuspense = ({
   });
 
   return (
-    <div>
+    <div className="flex justify-between items-center">
       <div className="flex flex-row items-center gap-1">
         <h1 className="text-3xl font-bold">{playlist.name}</h1>
       </div>
