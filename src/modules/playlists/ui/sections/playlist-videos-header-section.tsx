@@ -17,7 +17,7 @@ export const PlaylistVideosHeaderSection = ({
   playlistId,
 }: PlaylistVideosHeaderSectionProps) => {
   return (
-    <Suspense fallback={<PlaylistVideosHeaderSectionHeaderSkeleton />}>
+    <Suspense fallback={<PlaylistVideosHeaderSectionSkeleton />}>
       <ErrorBoundary fallback={<p>Error</p>}>
         <PlaylistVideosHeaderSectionSuspense playlistId={playlistId} />
       </ErrorBoundary>
@@ -25,7 +25,7 @@ export const PlaylistVideosHeaderSection = ({
   );
 };
 
-const PlaylistVideosHeaderSectionHeaderSkeleton = () => {
+const PlaylistVideosHeaderSectionSkeleton = () => {
   return (
     <div className="flex flex-col gap-y-2">
       <Skeleton className="h-6 w-24" />
@@ -55,7 +55,7 @@ const PlaylistVideosHeaderSectionSuspense = ({
   });
 
   return (
-    <div className="flex justify-between items-center">
+    <div className="flex items-center justify-between">
       <div className="flex flex-row items-center gap-1">
         <h1 className="text-3xl font-bold">{playlist.name}</h1>
       </div>

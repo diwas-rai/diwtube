@@ -13,7 +13,7 @@ const Page = async ({ params }: PageProps) => {
 
   void trpc.playlists.getOne.prefetch({ playlistId });
   void trpc.playlists.getVideos.prefetchInfinite({
-    playlistId: playlistId,
+    playlistId,
     limit: DEFAULT_LIMIT,
   });
 
