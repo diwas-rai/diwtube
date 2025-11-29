@@ -10,6 +10,7 @@ import { videoReactionsRouter } from "@/modules/video-reactions/procedures";
 import { videoViewsRouter } from "@/modules/video-views/procedures";
 import { videosRouter } from "@/modules/videos/server/procedures";
 import { createTRPCRouter } from "../init";
+import { usersRouter } from "@/modules/users/server/procedures";
 
 export const appRouter = createTRPCRouter({
   categories: categoriesRouter,
@@ -23,6 +24,7 @@ export const appRouter = createTRPCRouter({
   videoReactions: videoReactionsRouter,
   videoViews: videoViewsRouter,
   videos: videosRouter,
+  users: usersRouter,
 });
 // export type definition of API
 export type AppRouter = typeof appRouter;
