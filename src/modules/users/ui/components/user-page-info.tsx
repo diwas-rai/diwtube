@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { SubscriptionButton } from "@/modules/subscriptions/ui/components/subscription-button";
 import { useSubscription } from "@/modules/subscriptions/hooks/use-subscription";
+import { cn } from "@/lib/utils";
 
 interface UserPageInfoProps {
   user: UserGetOneOutput;
@@ -20,7 +21,8 @@ export const UserPageInfo = ({ user }: UserPageInfoProps) => {
   });
 
   return (
-    <div className="flex flex-col">
+    <div className="py-6">
+      {/* Mobile layout */}
       <div className="flex flex-col md:hidden">
         <div className="flex items-center gap-3">
           <UserAvatar
@@ -60,6 +62,45 @@ export const UserPageInfo = ({ user }: UserPageInfoProps) => {
             size="default"
           />
         )}
+      </div>
+
+      {/* Desktop layout */}
+      <div className="hidden items-start gap-4 md:flex">
+        <UserAvatar
+          size="xl"
+          imageUrl={user.imageUrl}
+          name={user.name}
+          className={cn(
+            userId === user.clerkId &&
+              "cursor-pointer transition-opacity duration-300 hover:opacity-80"
+          )}
+          onClick={() => {
+            if (user.clerkId === userId) {
+              clerk.openUserProfile();
+            }
+          }}
+        />
+        <div className="min-w-0 flex-1">
+          <h1 className="text-4xl font-bold">{user.name}</h1>
+          <div className="mt-3 flex items-center gap-1 text-sm text-muted-foreground">
+            <span>{user.subscriberCount} subscribers</span>
+            <span>&bull;</span>
+            <span>{user.videoCount} videos</span>
+          </div>
+          {userId === user.clerkId ? (
+            <Button variant="secondary" asChild className="mt-3 rounded-full">
+              <Link href="/studio">Go to studio</Link>
+            </Button>
+          ) : (
+            <SubscriptionButton
+              disabled={isPending || !isLoaded}
+              isSubscribed={user.viewerSubscribed}
+              onClick={onClick}
+              className="mt-3"
+              size="default"
+            />
+          )}
+        </div>
       </div>
     </div>
   );
