@@ -6,10 +6,39 @@ import { Button } from "@/components/ui/button";
 import { SubscriptionButton } from "@/modules/subscriptions/ui/components/subscription-button";
 import { useSubscription } from "@/modules/subscriptions/hooks/use-subscription";
 import { cn } from "@/lib/utils";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface UserPageInfoProps {
   user: UserGetOneOutput;
 }
+
+export const UserPageInfoSkeleton = () => {
+  return (
+    <div className="py-6">
+      {/* Mobile layout */}
+      <div className="flex flex-col md:hidden">
+        <div className="flex items-center gap-3">
+          <Skeleton className="h-[60px] w-[60px] rounded-full" />
+          <div className="min-w-0 flex-1 space-y-2">
+            <Skeleton className="h-6 w-32" />
+            <Skeleton className="h-4 w-48" />
+          </div>
+        </div>
+        <Skeleton className="mt-3 h-10 w-full rounded-full" />
+      </div>
+
+      {/* Desktop layout */}
+      <div className="hidden items-start gap-4 md:flex">
+        <Skeleton className="h-[160px] w-[160px] rounded-full" />
+        <div className="min-w-0 flex-1 space-y-2">
+          <Skeleton className="h-8 w-48" />
+          <Skeleton className="h-5 w-56" />
+          <Skeleton className="mt-1 h-10 w-32 rounded-full" />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const UserPageInfo = ({ user }: UserPageInfoProps) => {
   const { userId, isLoaded } = useAuth();

@@ -1,11 +1,16 @@
 "use client";
 
-import { Skeleton } from "@/components/ui/skeleton";
 import { trpc } from "@/trpc/client";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { UserPageBanner } from "../components/user-page-banner";
-import { UserPageInfo } from "../components/user-page-info";
+import {
+  UserPageBanner,
+  UserPageBannerSkeleton,
+} from "../components/user-page-banner";
+import {
+  UserPageInfo,
+  UserPageInfoSkeleton,
+} from "../components/user-page-info";
 
 interface UserSectionProps {
   userId: string;
@@ -22,7 +27,12 @@ export const UserSection = (props: UserSectionProps) => {
 };
 
 const UserSectionSkeleton = () => {
-  return <Skeleton />;
+  return (
+    <div className="flex flex-col">
+      <UserPageBannerSkeleton />
+      <UserPageInfoSkeleton />
+    </div>
+  );
 };
 
 const UserSectionSuspense = ({ userId }: UserSectionProps) => {
