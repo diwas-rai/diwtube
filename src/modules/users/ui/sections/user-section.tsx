@@ -11,6 +11,7 @@ import {
   UserPageInfo,
   UserPageInfoSkeleton,
 } from "../components/user-page-info";
+import { Separator } from "@/components/ui/separator";
 
 interface UserSectionProps {
   userId: string;
@@ -31,6 +32,7 @@ const UserSectionSkeleton = () => {
     <div className="flex flex-col">
       <UserPageBannerSkeleton />
       <UserPageInfoSkeleton />
+      <Separator />
     </div>
   );
 };
@@ -42,6 +44,7 @@ const UserSectionSuspense = ({ userId }: UserSectionProps) => {
     <div className="flex flex-col">
       <UserPageBanner user={user} />
       <UserPageInfo user={user} />
+      <Separator />
     </div>
   );
 };
